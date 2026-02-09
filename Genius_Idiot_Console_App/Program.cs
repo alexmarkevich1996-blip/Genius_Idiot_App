@@ -7,6 +7,7 @@ class Program
         ShowTestingRules();
         PrepareBeforeTesting();
         int finalScore = TestErudition();
+        ShowResult(finalScore);
     }
     
     
@@ -32,17 +33,16 @@ class Program
             Console.WriteLine("Неверное ключевое слово. Повторите, пожалуйста, попытку.");
         }
     }
-    
     static int TestErudition()
     {
         int score = 0;
         Dictionary<string, string> questions = new Dictionary<string, string>()
         {
             {"Сколько будет два плюс два умноженное на два?", "6"},
-            {"Бревно нужно распилить на 10 частей, сколько надо сделать распилов", "9"},
-            {"“На двух руках 10 пальцев. Сколько пальцев на 5 руках”", "25"},
+            {"Бревно нужно распилить на 10 частей, сколько надо сделать распилов?", "9"},
+            {"На двух руках 10 пальцев. Сколько пальцев на 5 руках?", "25"},
             {"Укол делают каждые полчаса, сколько нужно минут для трех уколов?", "60"},
-            {"Пять свечей горело, две потухли. Сколько свечей осталось", "5"},
+            {"Пять свечей горело, две потухли. Сколько свечей осталось?", "5"},
         };
 
         int currentQuestion = 1;
@@ -66,5 +66,31 @@ class Program
         }
 
         return score;
+    }
+    static void ShowResult(int finalScore)
+    {
+        string level = string.Empty;
+        switch (finalScore)
+        {
+            case 0:
+                level = "Идиот";
+                break;
+            case 1:
+                level = "Кретин";
+                break;
+            case 2:
+                level = "Дурак";
+                break;
+            case 3:
+                level = "Нормальный";
+                break;
+            case 4:
+                level = "Талант";
+                break;
+            case 5:
+                level = "Гений";
+                break;
+        }
+        Console.WriteLine($"Поздравляем, вы окончили тестирование \"Гений-Идиот\"! Суммарное количество правильных ответов - {finalScore} . Ваш результат - {level}");
     }
 }
