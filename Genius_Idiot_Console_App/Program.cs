@@ -48,7 +48,7 @@ class Program
         int currentQuestion = 1;
         foreach (var (question, answer) in questions)
         {
-            Console.WriteLine(question);
+            Console.WriteLine($"Вопрос №{currentQuestion}: {question}");
             Console.Write("Ваш ответ: ");
             var input = Console.ReadLine();
 
@@ -91,6 +91,6 @@ class Program
                 level = "Гений";
                 break;
         }
-        Console.WriteLine($"Поздравляем, вы окончили тестирование \"Гений-Идиот\"! Суммарное количество правильных ответов - {finalScore} . Ваш результат - {level}");
+        Console.WriteLine($"Поздравляем, вы окончили тестирование \"Гений-Идиот\"! Суммарное количество правильных ответов - {finalScore}. Ваш результат - {level}");
     }
 }
