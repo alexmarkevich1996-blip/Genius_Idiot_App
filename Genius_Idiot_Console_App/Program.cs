@@ -4,14 +4,33 @@ class Program
 {
     static void Main(string[] args)
     {
+        string userName = AskUserName();
         ShowTestingRules();
         PrepareBeforeTesting();
         int finalScore = TestErudition();
-        ShowResult(finalScore);
+        ShowResult(finalScore, userName);
     }
-    
+
+    static string AskUserName()
+    {
+        while (true)
+        {
+            Console.Write("Пожалуйста, введите ваше имя: ");
+            string userName = Console.ReadLine();
+            if (userName != string.Empty)
+            {
+                Console.WriteLine($"Добро пожаловать, {userName}!");
+                return userName;
+            }
+            else
+            {
+                Console.WriteLine("Вы не ввели имя. Просим вас повторить попытку.");
+            }
+        }
+    }
     static void ShowTestingRules()
     {
+        Console.WriteLine();
         Console.WriteLine("Приветствуем вас на тестировании “Гений-Идиот”. На данном тестировании мы попросим вас ответить всего на 5 вопросов. \n" +
                           "Каждый из них представляет собой логическую задачу, где ответом должно быть какое-то число. \n" +
                           "По каждому из вопросов вы должно ввести ответ в течении 10 секунд. \n" +
@@ -57,7 +76,7 @@ class Program
        
         return finalScore;
     }
-    static void ShowResult(int finalScore)
+    static void ShowResult(int finalScore, string userName)
     {
         string level = string.Empty;
         switch (finalScore)
@@ -81,7 +100,7 @@ class Program
                 level = "Гений";
                 break;
         }
-        Console.WriteLine($"Поздравляем, вы окончили тестирование \"Гений-Идиот\"! Суммарное количество правильных ответов - {finalScore}. Ваш результат - {level}");
+        Console.WriteLine($"Поздравляем {userName}, вы окончили тестирование \"Гений-Идиот\"! Суммарное количество правильных ответов - {finalScore}. Ваш результат - {level}");
     }
     public static void ShuffleQuestions(List<string> list)
     {
