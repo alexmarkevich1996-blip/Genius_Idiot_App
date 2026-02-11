@@ -5,10 +5,14 @@ class Program
     static void Main(string[] args)
     {
         string userName = AskUserName();
-        ShowTestingRules();
-        PrepareBeforeTesting();
-        int finalScore = TestErudition();
-        ShowResult(finalScore, userName);
+
+        do
+        {
+            ShowTestingRules();
+            PrepareBeforeTesting();
+            int finalScore = TestErudition();
+            ShowResult(finalScore, userName);
+        } while (AskToContinueTest());
     }
 
     static string AskUserName()
@@ -135,5 +139,16 @@ class Program
             currentQuestion++;
             Console.WriteLine();
         }
+    }
+
+    public static bool AskToContinueTest()
+    {
+        Console.WriteLine("Хотите повторить тест? Введите \"ДА\" для продолжения: ");
+        string answer = Console.ReadLine().ToLower();
+
+        if (answer == "да")
+            return true;
+
+        return false;
     }
 }
