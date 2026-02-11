@@ -36,23 +36,32 @@ class Program
     static int TestErudition()
     {
         int score = 0;
-        Dictionary<string, string> questions = new Dictionary<string, string>()
+        List<string> questionsDescription = new List<string>()
+        {
+            "Сколько будет два плюс два умноженное на два?",
+            "Бревно нужно распилить на 10 частей, сколько надо сделать распилов?",
+            "На двух руках 10 пальцев. Сколько пальцев на 5 руках?",
+            "Укол делают каждые полчаса, сколько нужно минут для трех уколов?",
+            "Пять свечей горело, две потухли. Сколько свечей осталось?"
+        };
+        Dictionary<string, string> questionsWithAnswer = new Dictionary<string, string>()
         {
             {"Сколько будет два плюс два умноженное на два?", "6"},
             {"Бревно нужно распилить на 10 частей, сколько надо сделать распилов?", "9"},
             {"На двух руках 10 пальцев. Сколько пальцев на 5 руках?", "25"},
             {"Укол делают каждые полчаса, сколько нужно минут для трех уколов?", "60"},
-            {"Пять свечей горело, две потухли. Сколько свечей осталось?", "5"},
+            {"Пять свечей горело, две потухли. Сколько свечей осталось?", "5"}
         };
 
+        ShuffleQuestions(questionsDescription);
         int currentQuestion = 1;
-        foreach (var (question, answer) in questions)
+        foreach (var question in questionsDescription)
         {
             Console.WriteLine($"Вопрос №{currentQuestion}: {question}");
             Console.Write("Ваш ответ: ");
             var input = Console.ReadLine();
 
-            if (input == answer)
+            if (input == questionsWithAnswer[question])
             {
                 score++;
                 Console.WriteLine($"Вы ответили на вопрос #{currentQuestion}. Переходим к следующему.");
@@ -92,5 +101,16 @@ class Program
                 break;
         }
         Console.WriteLine($"Поздравляем, вы окончили тестирование \"Гений-Идиот\"! Суммарное количество правильных ответов - {finalScore}. Ваш результат - {level}");
+    }
+
+    public static void ShuffleQuestions(List<string> list)
+    {
+        Random random = new Random();
+
+        for (int i = list.Count - 1; i > 0; i--)
+        {
+            int j = random.Next(i + 1);
+            (list[i], list[j]) = (list[j], list[i]);
+        }
     }
 }
