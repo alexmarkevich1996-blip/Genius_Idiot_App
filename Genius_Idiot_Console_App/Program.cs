@@ -35,7 +35,7 @@ class Program
     }
     static int TestErudition()
     {
-        int score = 0;
+        int finalScore;
         List<string> questionsDescription = new List<string>()
         {
             "Сколько будет два плюс два умноженное на два?",
@@ -54,27 +54,9 @@ class Program
         };
 
         ShuffleQuestions(questionsDescription);
-        int currentQuestion = 1;
-        foreach (var question in questionsDescription)
-        {
-            Console.WriteLine($"Вопрос №{currentQuestion}: {question}");
-            Console.Write("Ваш ответ: ");
-            var input = Console.ReadLine();
-
-            if (input == questionsWithAnswer[question])
-            {
-                score++;
-                Console.WriteLine($"Вы ответили на вопрос #{currentQuestion}. Переходим к следующему.");
-            }
-            else if (input == null)
-                Console.WriteLine($"Вы не успели ответить на вопрос #{currentQuestion}. Ответ не засчитан");
-            else
-                Console.WriteLine($"Вы ответили на вопрос #{currentQuestion}. Переходим к следующему.");
-            currentQuestion++;
-            Console.WriteLine();
-        }
-
-        return score;
+        DisplayQuestions(questionsDescription, questionsWithAnswer, out finalScore);
+       
+        return finalScore;
     }
     static void ShowResult(int finalScore)
     {
@@ -111,6 +93,31 @@ class Program
         {
             int j = random.Next(i + 1);
             (list[i], list[j]) = (list[j], list[i]);
+        }
+    }
+
+    public static void DisplayQuestions(List<string> questionsDescription, Dictionary<string, string> questionsWithAnswer, out int score)
+    {
+        score = 0;
+        int currentQuestion = 1;
+        
+        foreach (var question in questionsDescription)
+        {
+            Console.WriteLine($"Вопрос №{currentQuestion}: {question}");
+            Console.Write("Ваш ответ: ");
+            var input = Console.ReadLine();
+
+            if (input == questionsWithAnswer[question])
+            {
+                score++;
+                Console.WriteLine($"Вы ответили на вопрос #{currentQuestion}. Переходим к следующему.");
+            }
+            else if (input == null)
+                Console.WriteLine($"Вы не успели ответить на вопрос #{currentQuestion}. Ответ не засчитан");
+            else
+                Console.WriteLine($"Вы ответили на вопрос #{currentQuestion}. Переходим к следующему.");
+            currentQuestion++;
+            Console.WriteLine();
         }
     }
 }
