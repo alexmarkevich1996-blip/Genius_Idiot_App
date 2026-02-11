@@ -10,7 +10,6 @@ class Program
         ShowResult(finalScore);
     }
     
-    
     static void ShowTestingRules()
     {
         Console.WriteLine("Приветствуем вас на тестировании “Гений-Идиот”. На данном тестировании мы попросим вас ответить всего на 5 вопросов. \n" +
@@ -84,7 +83,6 @@ class Program
         }
         Console.WriteLine($"Поздравляем, вы окончили тестирование \"Гений-Идиот\"! Суммарное количество правильных ответов - {finalScore}. Ваш результат - {level}");
     }
-
     public static void ShuffleQuestions(List<string> list)
     {
         Random random = new Random();
@@ -95,7 +93,6 @@ class Program
             (list[i], list[j]) = (list[j], list[i]);
         }
     }
-
     public static void DisplayQuestions(List<string> questionsDescription, Dictionary<string, string> questionsWithAnswer, out int score)
     {
         score = 0;
