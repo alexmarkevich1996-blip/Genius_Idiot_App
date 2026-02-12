@@ -13,25 +13,36 @@ class Program
             int finalScore = TestErudition();
             ShowResult(finalScore, userName);
         } while (AskToContinueTest());
-    }
-
-    public static string AskUserName()
-    {
-        while (true)
+        
+        string AskUserName()
         {
-            Console.Write("Пожалуйста, введите ваше имя: ");
-            string userName = Console.ReadLine();
-            if (userName != string.Empty)
+            while (true)
             {
-                Console.WriteLine($"Добро пожаловать, {userName}!");
-                return userName;
-            }
-            else
-            {
-                Console.WriteLine("Вы не ввели имя. Просим вас повторить попытку.");
+                Console.Write("Пожалуйста, введите ваше имя: ");
+                string userName = Console.ReadLine();
+                if (userName != string.Empty)
+                {
+                    Console.WriteLine($"Добро пожаловать, {userName}!");
+                    return userName;
+                }
+                else
+                {
+                    Console.WriteLine("Вы не ввели имя. Просим вас повторить попытку.");
+                }
             }
         }
+        bool AskToContinueTest()
+        {
+            Console.WriteLine("Хотите повторить тест? Введите \"ДА\" для продолжения: ");
+            string answer = Console.ReadLine().ToLower();
+
+            if (answer == "да")
+                return true;
+
+            return false;
+        }
     }
+    
     public static void ShowTestingRules()
     {
         Console.WriteLine();
@@ -79,6 +90,60 @@ class Program
         DisplayQuestions(questionsDescription, questionsWithAnswer, out finalScore);
        
         return finalScore;
+        
+        void ShuffleQuestions(List<string> list)
+        {
+            Random random = new Random();
+
+            for (int i = list.Count - 1; i > 0; i--)
+            {
+                int j = random.Next(i + 1);
+                (list[i], list[j]) = (list[j], list[i]);
+            }
+        }
+        void DisplayQuestions(List<string> questionsDescription, Dictionary<string, int> questionsWithAnswer, out int score)
+        {
+            score = 0;
+            int currentQuestion = 1;
+        
+            foreach (var question in questionsDescription)
+            {
+                Console.WriteLine($"Вопрос №{currentQuestion}: {question}");
+                Console.Write("Ваш ответ: ");
+
+                int input = GetIntegerInput();
+            
+                if (input == questionsWithAnswer[question])
+                {
+                    score++;
+                    Console.WriteLine($"Вы ответили на вопрос #{currentQuestion}. Переходим к следующему.");
+                }
+                else if (input == null)
+                    Console.WriteLine($"Вы не успели ответить на вопрос #{currentQuestion}. Ответ не засчитан");
+                else
+                    Console.WriteLine($"Вы ответили на вопрос #{currentQuestion}. Переходим к следующему.");
+                currentQuestion++;
+                Console.WriteLine();
+            }
+
+            int GetIntegerInput()
+            {
+            
+                int integerInput;
+
+                while (true)
+                {
+                    string userInput = Console.ReadLine();
+                
+                    if (int.TryParse(userInput, out integerInput))
+                        return integerInput;
+                
+                    Console.WriteLine("Неподходящий формат ответа. Введите целочисленное значение");
+                
+                }
+            }
+        }
+        
     }
     public static void ShowResult(int finalScore, string userName)
     {
@@ -105,67 +170,5 @@ class Program
                 break;
         }
         Console.WriteLine($"Поздравляем {userName}, вы окончили тестирование \"Гений-Идиот\"! Суммарное количество правильных ответов - {finalScore}. Ваш результат - {level}");
-    }
-    public static void ShuffleQuestions(List<string> list)
-    {
-        Random random = new Random();
-
-        for (int i = list.Count - 1; i > 0; i--)
-        {
-            int j = random.Next(i + 1);
-            (list[i], list[j]) = (list[j], list[i]);
-        }
-    }
-    public static void DisplayQuestions(List<string> questionsDescription, Dictionary<string, int> questionsWithAnswer, out int score)
-    {
-        score = 0;
-        int currentQuestion = 1;
-        
-        foreach (var question in questionsDescription)
-        {
-            Console.WriteLine($"Вопрос №{currentQuestion}: {question}");
-            Console.Write("Ваш ответ: ");
-
-            int input = GetIntegerInput();
-            
-            if (input == questionsWithAnswer[question])
-            {
-                score++;
-                Console.WriteLine($"Вы ответили на вопрос #{currentQuestion}. Переходим к следующему.");
-            }
-            else if (input == null)
-                Console.WriteLine($"Вы не успели ответить на вопрос #{currentQuestion}. Ответ не засчитан");
-            else
-                Console.WriteLine($"Вы ответили на вопрос #{currentQuestion}. Переходим к следующему.");
-            currentQuestion++;
-            Console.WriteLine();
-        }
-
-        int GetIntegerInput()
-        {
-            
-            int integerInput;
-
-            while (true)
-            {
-                string userInput = Console.ReadLine();
-                
-                if (int.TryParse(userInput, out integerInput))
-                    return integerInput;
-                
-                Console.WriteLine("Неподходящий формат ответа. Введите целочисленное значение");
-                
-            }
-        }
-    }
-    public static bool AskToContinueTest()
-    {
-        Console.WriteLine("Хотите повторить тест? Введите \"ДА\" для продолжения: ");
-        string answer = Console.ReadLine().ToLower();
-
-        if (answer == "да")
-            return true;
-
-        return false;
     }
 }
