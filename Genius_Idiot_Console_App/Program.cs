@@ -66,13 +66,13 @@ class Program
             "Укол делают каждые полчаса, сколько нужно минут для трех уколов?",
             "Пять свечей горело, две потухли. Сколько свечей осталось?"
         };
-        Dictionary<string, string> questionsWithAnswer = new Dictionary<string, string>()
+        var questionsWithAnswer = new Dictionary<string, int>()
         {
-            {"Сколько будет два плюс два умноженное на два?", "6"},
-            {"Бревно нужно распилить на 10 частей, сколько надо сделать распилов?", "9"},
-            {"На двух руках 10 пальцев. Сколько пальцев на 5 руках?", "25"},
-            {"Укол делают каждые полчаса, сколько нужно минут для трех уколов?", "60"},
-            {"Пять свечей горело, две потухли. Сколько свечей осталось?", "5"}
+            {"Сколько будет два плюс два умноженное на два?", 6},
+            {"Бревно нужно распилить на 10 частей, сколько надо сделать распилов?", 9},
+            {"На двух руках 10 пальцев. Сколько пальцев на 5 руках?", 25},
+            {"Укол делают каждые полчаса, сколько нужно минут для трех уколов?", 60},
+            {"Пять свечей горело, две потухли. Сколько свечей осталось?", 5}
         };
 
         ShuffleQuestions(questionsDescription);
@@ -116,7 +116,7 @@ class Program
             (list[i], list[j]) = (list[j], list[i]);
         }
     }
-    public static void DisplayQuestions(List<string> questionsDescription, Dictionary<string, string> questionsWithAnswer, out int score)
+    public static void DisplayQuestions(List<string> questionsDescription, Dictionary<string, int> questionsWithAnswer, out int score)
     {
         score = 0;
         int currentQuestion = 1;
@@ -125,8 +125,9 @@ class Program
         {
             Console.WriteLine($"Вопрос №{currentQuestion}: {question}");
             Console.Write("Ваш ответ: ");
-            var input = Console.ReadLine();
 
+            int input = GetIntegerInput();
+            
             if (input == questionsWithAnswer[question])
             {
                 score++;
@@ -138,6 +139,23 @@ class Program
                 Console.WriteLine($"Вы ответили на вопрос #{currentQuestion}. Переходим к следующему.");
             currentQuestion++;
             Console.WriteLine();
+        }
+
+        int GetIntegerInput()
+        {
+            
+            int integerInput;
+
+            while (true)
+            {
+                string userInput = Console.ReadLine();
+                
+                if (int.TryParse(userInput, out integerInput))
+                    return integerInput;
+                
+                Console.WriteLine("Неподходящий формат ответа. Введите целочисленное значение");
+                
+            }
         }
     }
     public static bool AskToContinueTest()
