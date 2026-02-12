@@ -165,7 +165,7 @@ class Program
             case 4:
                 level = "Талант";
                 break;
-            case 5:
+            case >= 5:
                 level = "Гений";
                 break;
         }
