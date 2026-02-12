@@ -10,8 +10,10 @@ class Program
         {
             ShowTestingRules();
             PrepareBeforeTesting();
-            int finalScore = TestErudition();
-            ShowResult(finalScore, userName);
+            int finalScore = 0;
+            int totalQuestionsNum = 0;
+            TestErudition(ref finalScore, out totalQuestionsNum);
+            ShowResult(finalScore, totalQuestionsNum,userName);
             SaveScoreInFile(finalScore, userName);
         } while (AskToContinueTest());
         
@@ -67,9 +69,8 @@ class Program
             Console.WriteLine("Неверное ключевое слово. Повторите, пожалуйста, попытку.");
         }
     }
-    public static int TestErudition()
+    public static void TestErudition(ref int finalScore, out int totalQuestionsNum)
     {
-        int finalScore;
         List<string> questionsDescription = new List<string>()
         {
             "Сколько будет два плюс два умноженное на два?",
@@ -86,11 +87,11 @@ class Program
             {"Укол делают каждые полчаса, сколько нужно минут для трех уколов?", 60},
             {"Пять свечей горело, две потухли. Сколько свечей осталось?", 5}
         };
+        totalQuestionsNum = questionsWithAnswer.Count;
 
         ShuffleQuestions(questionsDescription);
-        DisplayQuestions(questionsDescription, questionsWithAnswer, out finalScore);
-       
-        return finalScore;
+        DisplayQuestions(questionsDescription, questionsWithAnswer, ref finalScore);
+        
         
         void ShuffleQuestions(List<string> list)
         {
@@ -102,7 +103,7 @@ class Program
                 (list[i], list[j]) = (list[j], list[i]);
             }
         }
-        void DisplayQuestions(List<string> questionsDescription, Dictionary<string, int> questionsWithAnswer, out int score)
+        void DisplayQuestions(List<string> questionsDescription, Dictionary<string, int> questionsWithAnswer, ref int score)
         {
             score = 0;
             int currentQuestion = 1;
@@ -148,29 +149,34 @@ class Program
         }
         
     }
-    public static void ShowResult(int finalScore, string userName)
+    public static void ShowResult(int finalScore, int totalQuestionsNum, string userName)
     {
         string level = string.Empty;
-        switch (finalScore)
+        int percentScore = finalScore * 100 / totalQuestionsNum;
+        switch (percentScore)
         {
-            case 0:
-                level = "Идиот";
-                break;
-            case 1:
-                level = "Кретин";
-                break;
-            case 2:
-                level = "Дурак";
-                break;
-            case 3:
-                level = "Нормальный";
-                break;
-            case 4:
-                level = "Талант";
-                break;
-            case >= 5:
+            case 100:
                 level = "Гений";
                 break;
+            case >= 80 and < 100:
+                level = "Талант";
+                break;
+            case >= 60 and < 80:
+                level = "Нормальный";
+                break;
+            case >= 40 and < 60:
+                level = "Дурак";
+                break;
+            case >= 20 and < 40:
+                level = "Кретин";
+                break;
+            case < 20:
+                level = "Идиот";
+                break;
+            
+            
+            
+            
         }
         Console.WriteLine($"Поздравляем {userName}, вы окончили тестирование \"Гений-Идиот\"! Суммарное количество правильных ответов - {finalScore}. Ваш результат - {level}");
     }
