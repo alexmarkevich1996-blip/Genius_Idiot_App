@@ -15,7 +15,7 @@ class Program
         } while (AskToContinueTest());
     }
 
-    static string AskUserName()
+    public static string AskUserName()
     {
         while (true)
         {
@@ -32,7 +32,7 @@ class Program
             }
         }
     }
-    static void ShowTestingRules()
+    public static void ShowTestingRules()
     {
         Console.WriteLine();
         Console.WriteLine("Приветствуем вас на тестировании “Гений-Идиот”. На данном тестировании мы попросим вас ответить всего на 5 вопросов. \n" +
@@ -42,7 +42,7 @@ class Program
                           "По окончанию всех вопросов программа оценит количество правильных ответов и по ним определит уровень вашей эрудиции. Удачи вам!");
         Console.WriteLine();
     }
-    static void PrepareBeforeTesting()
+    public static void PrepareBeforeTesting()
     {
         Console.WriteLine("Введите ключевое слово “Ready”, если поняли и приняли правила тестирования. \n" +
                           "Тестирование не начнется, покуда вы не введете ключевое слово. ");
@@ -55,7 +55,7 @@ class Program
             Console.WriteLine("Неверное ключевое слово. Повторите, пожалуйста, попытку.");
         }
     }
-    static int TestErudition()
+    public static int TestErudition()
     {
         int finalScore;
         List<string> questionsDescription = new List<string>()
@@ -80,7 +80,7 @@ class Program
        
         return finalScore;
     }
-    static void ShowResult(int finalScore, string userName)
+    public static void ShowResult(int finalScore, string userName)
     {
         string level = string.Empty;
         switch (finalScore)
@@ -140,7 +140,6 @@ class Program
             Console.WriteLine();
         }
     }
-
     public static bool AskToContinueTest()
     {
         Console.WriteLine("Хотите повторить тест? Введите \"ДА\" для продолжения: ");
