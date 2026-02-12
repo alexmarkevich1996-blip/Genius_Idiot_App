@@ -112,7 +112,7 @@ class Program
                 Console.WriteLine($"Вопрос №{currentQuestion}: {question}");
                 Console.Write("Ваш ответ: ");
 
-                int input = GetIntegerInput();
+                int input = GetUserAnswer();
             
                 if (input == questionsWithAnswer[question])
                 {
@@ -127,20 +127,22 @@ class Program
                 Console.WriteLine();
             }
 
-            int GetIntegerInput()
+            int GetUserAnswer()
             {
-            
-                int integerInput;
-
                 while (true)
                 {
-                    string userInput = Console.ReadLine();
-                
-                    if (int.TryParse(userInput, out integerInput))
-                        return integerInput;
-                
-                    Console.WriteLine("Неподходящий формат ответа. Введите целочисленное значение");
-                
+                    try
+                    {
+                        return int.Parse(Console.ReadLine());
+                    }
+                    catch (FormatException)
+                    {
+                        Console.WriteLine("Неправильный формат ответа. Введите целочисленное значение!");
+                    }
+                    catch (OverflowException)
+                    {
+                        Console.WriteLine("Неправильный формат ответа. Введите число от -2*10^9 до 2*10^9");
+                    }
                 }
             }
         }
