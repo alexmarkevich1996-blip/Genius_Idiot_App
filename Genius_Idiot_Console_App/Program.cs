@@ -12,6 +12,7 @@ class Program
             PrepareBeforeTesting();
             int finalScore = TestErudition();
             ShowResult(finalScore, userName);
+            SaveScoreInFile(finalScore, userName);
         } while (AskToContinueTest());
         
         string AskUserName()
@@ -170,5 +171,15 @@ class Program
                 break;
         }
         Console.WriteLine($"Поздравляем {userName}, вы окончили тестирование \"Гений-Идиот\"! Суммарное количество правильных ответов - {finalScore}. Ваш результат - {level}");
+    }
+    public static void SaveScoreInFile(int finalScore, string userName)
+    {
+        string path = "/Users/aleksandr/RiderProjects/Genius_Idiot_App/Genius_Idiot_Console_App/user_results.txt";
+
+        using (StreamWriter sw = new StreamWriter(path, true))
+        {
+            DateTime date = DateTime.Today;
+            sw.WriteLineAsync($"{userName} - {finalScore} - {date}");
+        }
     }
 }
