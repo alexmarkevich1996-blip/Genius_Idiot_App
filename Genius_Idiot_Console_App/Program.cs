@@ -185,7 +185,7 @@ class Program
         string path = "/Users/aleksandr/RiderProjects/Genius_Idiot_App/Genius_Idiot_Console_App/user_results.txt";
         StreamWriter writer = new StreamWriter(path, true, Encoding.UTF8);
         DateTime date = DateTime.Today;
-        writer.WriteLine($"{userName}-{finalScore}-{level}-{date}");
+        writer.WriteLine($"{userName}-{finalScore}-{level}- {date}");
         writer.Close();
     }
     
@@ -195,10 +195,16 @@ class Program
         string answer = Console.ReadLine().ToLower();
         StreamReader reader = new StreamReader("/Users/aleksandr/RiderProjects/Genius_Idiot_App/Genius_Idiot_Console_App/user_results.txt", Encoding.UTF8);
         
+        Console.WriteLine("{0,-20}{1,18}{2,15}{3,15}", "Имя","Кол-во правильных ответов","Результат","Дата");
         while (!reader.EndOfStream)
         {
             string line = reader.ReadLine();
-            Console.WriteLine(line);
+            string[] lineParts = line.Split('-');
+            string userName = lineParts[0];
+            string finalScore = lineParts[1];
+            string level = lineParts[2];
+            string date = lineParts[3];
+            Console.WriteLine($"{0,-20}{1,15}{2,20}{3,20}", userName, finalScore, level, date);
         }
         reader.Close();
     }
