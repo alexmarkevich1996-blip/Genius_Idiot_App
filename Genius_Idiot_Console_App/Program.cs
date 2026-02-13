@@ -13,8 +13,9 @@ class Program
             int finalScore = 0;
             int totalQuestionsNum = 0;
             TestErudition(ref finalScore, out totalQuestionsNum);
-            ShowResult(finalScore, totalQuestionsNum,userName);
-            SaveScoreInFile(finalScore, userName);
+            string level;
+            ShowResult(finalScore, totalQuestionsNum,userName, out level);
+            SaveScoreInFile(finalScore, userName, level);
         } while (AskToContinueTest());
         
         string AskUserName()
@@ -149,9 +150,9 @@ class Program
         }
         
     }
-    public static void ShowResult(int finalScore, int totalQuestionsNum, string userName)
+    public static void ShowResult(int finalScore, int totalQuestionsNum, string userName, out string level)
     {
-        string level = string.Empty;
+        level = "";
         int percentScore = finalScore * 100 / totalQuestionsNum;
         switch (percentScore)
         {
@@ -173,21 +174,17 @@ class Program
             case < 20:
                 level = "Идиот";
                 break;
-            
-            
-            
-            
         }
         Console.WriteLine($"Поздравляем {userName}, вы окончили тестирование \"Гений-Идиот\"! Суммарное количество правильных ответов - {finalScore}. Ваш результат - {level}");
     }
-    public static void SaveScoreInFile(int finalScore, string userName)
+    public static void SaveScoreInFile(int finalScore, string userName, string level)
     {
         string path = "/Users/aleksandr/RiderProjects/Genius_Idiot_App/Genius_Idiot_Console_App/user_results.txt";
 
         using (StreamWriter sw = new StreamWriter(path, true))
         {
             DateTime date = DateTime.Today;
-            sw.WriteLineAsync($"{userName} - {finalScore} - {date}");
+            sw.WriteLineAsync($"{userName} - {finalScore} - {level} - {date}");
         }
     }
 }
