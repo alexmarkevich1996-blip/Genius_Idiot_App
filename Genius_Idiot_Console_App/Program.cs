@@ -18,6 +18,7 @@ class Program
             string level;
             ShowResult(finalScore, totalQuestionsNum,userName, out level);
             SaveScoreInFile(finalScore, userName, level);
+            ShowPreviousResults();
         } while (AskToContinueTest());
         
         string AskUserName()
@@ -48,7 +49,7 @@ class Program
             return false;
         }
     }
-    
+
     public static void ShowTestingRules()
     {
         Console.WriteLine();
@@ -186,5 +187,19 @@ class Program
         DateTime date = DateTime.Today;
         writer.WriteLine($"{userName} - {finalScore} - {level} - {date}");
         writer.Close();
+    }
+    
+    private static void ShowPreviousResults()
+    {
+        Console.WriteLine("Хотите просмотреть предыдущие результат? Введите \"ДА\" для продолжения: ");
+        string answer = Console.ReadLine().ToLower();
+        StreamReader reader = new StreamReader("/Users/aleksandr/RiderProjects/Genius_Idiot_App/Genius_Idiot_Console_App/user_results.txt", Encoding.UTF8);
+        
+        while (!reader.EndOfStream)
+        {
+            string line = reader.ReadLine();
+            Console.WriteLine(line);
+        }
+        reader.Close();
     }
 }
