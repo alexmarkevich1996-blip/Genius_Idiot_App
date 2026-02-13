@@ -13,7 +13,7 @@ class Program
             ShowTestingRules();
             PrepareBeforeTesting();
             int finalScore = 0;
-            int totalQuestionsNum = 0;
+            int totalQuestionsNum;
             TestErudition(ref finalScore, out totalQuestionsNum);
             string level;
             ShowResult(finalScore, totalQuestionsNum,userName, out level);
@@ -27,14 +27,19 @@ class Program
             {
                 Console.Write("Пожалуйста, введите ваше имя: ");
                 string userName = Console.ReadLine();
-                if (userName != string.Empty)
+                if (userName == string.Empty)
                 {
-                    Console.WriteLine($"Добро пожаловать, {userName}!");
-                    return userName;
+                    Console.WriteLine("Вы не ввели имя. Просим вас повторить попытку.");
+                }
+                else if (userName.Contains('-'))
+                {
+                    Console.WriteLine($"Недопустимо писать имя со спец символом \"-\"");
                 }
                 else
                 {
-                    Console.WriteLine("Вы не ввели имя. Просим вас повторить попытку.");
+                    
+                    Console.WriteLine($"Добро пожаловать, {userName}!");
+                    return userName;
                 }
             }
         }
@@ -183,9 +188,9 @@ class Program
     public static void SaveScoreInFile(int finalScore, string userName, string level)
     {
         string path = "/Users/aleksandr/RiderProjects/Genius_Idiot_App/Genius_Idiot_Console_App/user_results.txt";
-        StreamWriter writer = new StreamWriter(path, true, Encoding.UTF8);
-        DateTime date = DateTime.Today;
-        writer.WriteLine($"{userName}-{finalScore}-{level}- {date}");
+        var writer = new StreamWriter(path, true, Encoding.UTF8);
+        var date = DateTime.Today;
+        writer.WriteLine($"{userName}-{finalScore}-{level}-{date}");
         writer.Close();
     }
     
@@ -193,6 +198,10 @@ class Program
     {
         Console.WriteLine("Хотите просмотреть предыдущие результат? Введите \"ДА\" для продолжения: ");
         string answer = Console.ReadLine().ToLower();
+
+        if (answer.ToLower() != "да")
+            return;
+        
         StreamReader reader = new StreamReader("/Users/aleksandr/RiderProjects/Genius_Idiot_App/Genius_Idiot_Console_App/user_results.txt", Encoding.UTF8);
         
         Console.WriteLine("{0,-20}{1,18}{2,15}{3,15}", "Имя","Кол-во правильных ответов","Результат","Дата");
@@ -204,7 +213,7 @@ class Program
             string finalScore = lineParts[1];
             string level = lineParts[2];
             string date = lineParts[3];
-            Console.WriteLine($"{0,-20}{1,15}{2,20}{3,20}", userName, finalScore, level, date);
+            Console.WriteLine("{0,-20}{1,15}{2,23}{3,32}", userName, finalScore, level, date);
         }
         reader.Close();
     }
