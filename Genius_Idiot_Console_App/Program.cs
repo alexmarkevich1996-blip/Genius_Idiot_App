@@ -1,4 +1,6 @@
-﻿namespace Genius_Idiot_Console_App;
+﻿using System.Text;
+
+namespace Genius_Idiot_Console_App;
 
 class Program
 {
@@ -180,11 +182,9 @@ class Program
     public static void SaveScoreInFile(int finalScore, string userName, string level)
     {
         string path = "/Users/aleksandr/RiderProjects/Genius_Idiot_App/Genius_Idiot_Console_App/user_results.txt";
-
-        using (StreamWriter sw = new StreamWriter(path, true))
-        {
-            DateTime date = DateTime.Today;
-            sw.WriteLineAsync($"{userName} - {finalScore} - {level} - {date}");
-        }
+        StreamWriter writer = new StreamWriter(path, true, Encoding.UTF8);
+        DateTime date = DateTime.Today;
+        writer.WriteLine($"{userName} - {finalScore} - {level} - {date}");
+        writer.Close();
     }
 }
