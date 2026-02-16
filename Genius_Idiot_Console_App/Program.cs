@@ -80,29 +80,20 @@ class Program
     }
     public static void TestErudition(ref int finalScore, out int totalQuestionsNum)
     {
-        List<string> questionsDescription = new List<string>()
+        List<Question> questions = new List<Question>()
         {
-            "Сколько будет два плюс два умноженное на два?",
-            "Бревно нужно распилить на 10 частей, сколько надо сделать распилов?",
-            "На двух руках 10 пальцев. Сколько пальцев на 5 руках?",
-            "Укол делают каждые полчаса, сколько нужно минут для трех уколов?",
-            "Пять свечей горело, две потухли. Сколько свечей осталось?"
+            new Question("Сколько будет два плюс два умноженное на два?", 6),
+            new Question("Бревно нужно распилить на 10 частей, сколько надо сделать распилов?", 9),
+            new Question("На двух руках 10 пальцев. Сколько пальцев на 5 руках?", 25),
+            new Question("Укол делают каждые полчаса, сколько нужно минут для трех уколов?", 60),
+            new Question("Пять свечей горело, две потухли. Сколько свечей осталось?", 5)
         };
-        var questionsWithAnswer = new Dictionary<string, int>()
-        {
-            {"Сколько будет два плюс два умноженное на два?", 6},
-            {"Бревно нужно распилить на 10 частей, сколько надо сделать распилов?", 9},
-            {"На двух руках 10 пальцев. Сколько пальцев на 5 руках?", 25},
-            {"Укол делают каждые полчаса, сколько нужно минут для трех уколов?", 60},
-            {"Пять свечей горело, две потухли. Сколько свечей осталось?", 5}
-        };
-        totalQuestionsNum = questionsWithAnswer.Count;
+        totalQuestionsNum = questions.Count;
 
-        ShuffleQuestions(questionsDescription);
-        DisplayQuestions(questionsDescription, questionsWithAnswer, ref finalScore);
+        ShuffleQuestions(questions);
+        DisplayQuestions(questions, ref finalScore);
         
-        
-        void ShuffleQuestions(List<string> list)
+        void ShuffleQuestions(List<Question> list)
         {
             Random random = new Random();
 
@@ -112,19 +103,19 @@ class Program
                 (list[i], list[j]) = (list[j], list[i]);
             }
         }
-        void DisplayQuestions(List<string> questionsDescription, Dictionary<string, int> questionsWithAnswer, ref int score)
+        void DisplayQuestions(List<Question> questions, ref int score)
         {
             score = 0;
             int currentQuestion = 1;
         
-            foreach (var question in questionsDescription)
+            foreach (var question in questions)
             {
-                Console.WriteLine($"Вопрос №{currentQuestion}: {question}");
+                Console.WriteLine($"Вопрос №{currentQuestion}: {question.Text}");
                 Console.Write("Ваш ответ: ");
 
                 int input = GetUserAnswer();
             
-                if (input == questionsWithAnswer[question])
+                if (input == question.Answer)
                 {
                     score++;
                     Console.WriteLine($"Вы ответили на вопрос #{currentQuestion}. Переходим к следующему.");
@@ -193,14 +184,13 @@ class Program
         writer.WriteLine($"{userName}-{finalScore}-{level}-{date}");
         writer.Close();
     }
-    
     private static void ShowPreviousResults()
     {
         Console.WriteLine("Хотите просмотреть предыдущие результат? Введите \"ДА\" для продолжения: ");
         string answer = Console.ReadLine().ToLower();
 
         if (answer.ToLower() != "да")
-            return;
+            return; 
         
         StreamReader reader = new StreamReader("/Users/aleksandr/RiderProjects/Genius_Idiot_App/Genius_Idiot_Console_App/user_results.txt", Encoding.UTF8);
         
