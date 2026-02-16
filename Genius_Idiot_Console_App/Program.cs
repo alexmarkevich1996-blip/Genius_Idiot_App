@@ -80,19 +80,24 @@ class Program
     }
     public static void TestErudition(ref int finalScore, out int totalQuestionsNum)
     {
-        List<Question> questions = new List<Question>()
-        {
-            new Question("Сколько будет два плюс два умноженное на два?", 6),
-            new Question("Бревно нужно распилить на 10 частей, сколько надо сделать распилов?", 9),
-            new Question("На двух руках 10 пальцев. Сколько пальцев на 5 руках?", 25),
-            new Question("Укол делают каждые полчаса, сколько нужно минут для трех уколов?", 60),
-            new Question("Пять свечей горело, две потухли. Сколько свечей осталось?", 5)
-        };
+        var questions = GetQuestions();
         totalQuestionsNum = questions.Count;
 
         ShuffleQuestions(questions);
         DisplayQuestions(questions, ref finalScore);
-        
+
+        List<Question> GetQuestions()
+        {
+            List<Question> questions = new List<Question>()
+            {
+                new Question("Сколько будет два плюс два умноженное на два?", 6),
+                new Question("Бревно нужно распилить на 10 частей, сколько надо сделать распилов?", 9),
+                new Question("На двух руках 10 пальцев. Сколько пальцев на 5 руках?", 25),
+                new Question("Укол делают каждые полчаса, сколько нужно минут для трех уколов?", 60),
+                new Question("Пять свечей горело, две потухли. Сколько свечей осталось?", 5)
+            };
+            return questions;
+        }
         void ShuffleQuestions(List<Question> list)
         {
             Random random = new Random();
