@@ -45,6 +45,4 @@ public class QuestionsStorage
         else
             Console.WriteLine("Неверный индекс вопроса");
     }
-    
-    
 }

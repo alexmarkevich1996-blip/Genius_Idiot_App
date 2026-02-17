@@ -17,6 +17,4 @@ public class Question
     {
         return $"Вопрос: {Text}";
     }
-    
-    
 }

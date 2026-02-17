@@ -9,6 +9,7 @@ class Program
         var user = new User();
         var questions = new QuestionsStorage();
         var userResults = new UserResultsStorage();
+        var fileService = new FileService();
         
         do
         {
@@ -17,8 +18,8 @@ class Program
             int finalScore = 0;
             TestErudition(questions, user, out finalScore);
             ShowResult(user, questions, finalScore, userResults);
-            SaveScoreInFile(user, userResults);
-            ShowPreviousResults();
+            fileService.SaveResultsInFile(user, userResults);
+            fileService.ShowPreviousResults();
         } while (AskToContinueTest());
         
         
@@ -136,36 +137,5 @@ class Program
         userResults.Add(result);
         
         Console.WriteLine($"Поздравляем {user.Name}, вы окончили тестирование \"Гений-Идиот\"! Суммарное количество правильных ответов - {finalScore}. Ваш результат - {level}");
-    }
-    public static void SaveScoreInFile(User user, UserResultsStorage results)
-    {
-        var lastResult = results.Results.Last();
-        string path = "/Users/aleksandr/RiderProjects/Genius_Idiot_App/Genius_Idiot_Console_App/user_results.txt";
-        var writer = new StreamWriter(path, true, Encoding.UTF8);
-        writer.WriteLine($"{user.Name}-{lastResult.Score}-{lastResult.Level}-{lastResult.Date}");
-        writer.Close();
-    }
-    private static void ShowPreviousResults()
-    {
-        Console.WriteLine("Хотите просмотреть предыдущие результат? Введите \"ДА\" для продолжения: ");
-        string answer = Console.ReadLine().ToLower();
-
-        if (answer.ToLower() != "да")
-            return; 
-        
-        StreamReader reader = new StreamReader("/Users/aleksandr/RiderProjects/Genius_Idiot_App/Genius_Idiot_Console_App/user_results.txt", Encoding.UTF8);
-        
-        Console.WriteLine("{0,-20}{1,18}{2,15}{3,15}", "Имя","Кол-во правильных ответов","Результат","Дата");
-        while (!reader.EndOfStream)
-        {
-            string line = reader.ReadLine();
-            string[] lineParts = line.Split('-');
-            string userName = lineParts[0];
-            string finalScore = lineParts[1];
-            string level = lineParts[2];
-            string date = lineParts[3];
-            Console.WriteLine("{0,-20}{1,15}{2,23}{3,32}", userName, finalScore, level, date);
-        }
-        reader.Close();
     }
 }
