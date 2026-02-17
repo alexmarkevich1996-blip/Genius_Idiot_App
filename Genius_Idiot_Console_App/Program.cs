@@ -6,43 +6,22 @@ class Program
 {
     static void Main(string[] args)
     {
-        string userName = AskUserName();
-
+        var user = new User();
+        var questions = new QuestionsStorage();
+        var userResults = new UserResultsStorage();
+        
         do
         {
             ShowTestingRules();
             PrepareBeforeTesting();
             int finalScore = 0;
-            int totalQuestionsNum;
-            TestErudition(ref finalScore, out totalQuestionsNum);
-            string level;
-            ShowResult(finalScore, totalQuestionsNum,userName, out level);
-            SaveScoreInFile(finalScore, userName, level);
+            TestErudition(questions, user, out finalScore);
+            ShowResult(user, questions, finalScore, userResults);
+            SaveScoreInFile(user, userResults);
             ShowPreviousResults();
         } while (AskToContinueTest());
         
-        string AskUserName()
-        {
-            while (true)
-            {
-                Console.Write("Пожалуйста, введите ваше имя: ");
-                string userName = Console.ReadLine();
-                if (userName == string.Empty)
-                {
-                    Console.WriteLine("Вы не ввели имя. Просим вас повторить попытку.");
-                }
-                else if (userName.Contains('-'))
-                {
-                    Console.WriteLine($"Недопустимо писать имя со спец символом \"-\"");
-                }
-                else
-                {
-                    
-                    Console.WriteLine($"Добро пожаловать, {userName}!");
-                    return userName;
-                }
-            }
-        }
+        
         bool AskToContinueTest()
         {
             Console.WriteLine("Хотите повторить тест? Введите \"ДА\" для продолжения: ");
@@ -78,86 +57,59 @@ class Program
             Console.WriteLine("Неверное ключевое слово. Повторите, пожалуйста, попытку.");
         }
     }
-    public static void TestErudition(ref int finalScore, out int totalQuestionsNum)
+
+    public static void TestErudition(QuestionsStorage questionsStorage, User user, out int score)
     {
-        var questions = GetQuestions();
-        totalQuestionsNum = questions.Count;
-
-        ShuffleQuestions(questions);
-        DisplayQuestions(questions, ref finalScore);
-
-        List<Question> GetQuestions()
-        {
-            List<Question> questions = new List<Question>()
-            {
-                new Question("Сколько будет два плюс два умноженное на два?", 6),
-                new Question("Бревно нужно распилить на 10 частей, сколько надо сделать распилов?", 9),
-                new Question("На двух руках 10 пальцев. Сколько пальцев на 5 руках?", 25),
-                new Question("Укол делают каждые полчаса, сколько нужно минут для трех уколов?", 60),
-                new Question("Пять свечей горело, две потухли. Сколько свечей осталось?", 5)
-            };
-            return questions;
-        }
-        void ShuffleQuestions(List<Question> list)
-        {
-            Random random = new Random();
-
-            for (int i = list.Count - 1; i > 0; i--)
-            {
-                int j = random.Next(i + 1);
-                (list[i], list[j]) = (list[j], list[i]);
-            }
-        }
-        void DisplayQuestions(List<Question> questions, ref int score)
-        {
-            score = 0;
-            int currentQuestion = 1;
+        questionsStorage.ShuffleQuestions();
         
-            foreach (var question in questions)
-            {
-                Console.WriteLine($"Вопрос №{currentQuestion}: {question.Text}");
-                Console.Write("Ваш ответ: ");
+        score = 0;
+        int currentQuestion = 1;
 
-                int input = GetUserAnswer();
-            
-                if (input == question.Answer)
-                {
-                    score++;
-                    Console.WriteLine($"Вы ответили на вопрос #{currentQuestion}. Переходим к следующему.");
-                }
-                else if (input == null)
-                    Console.WriteLine($"Вы не успели ответить на вопрос #{currentQuestion}. Ответ не засчитан");
-                else
-                    Console.WriteLine($"Вы ответили на вопрос #{currentQuestion}. Переходим к следующему.");
-                currentQuestion++;
-                Console.WriteLine();
+        foreach (var question in questionsStorage.Questions)
+        {
+            Console.WriteLine($"Вопрос №{currentQuestion}: {question.Text}");
+            Console.Write("Ваш ответ: ");
+
+            GetUserAnswer(question);
+
+            if (question.UserAnswer == question.Answer)
+            {
+                score++;
+                Console.WriteLine($"Вы ответили на вопрос #{currentQuestion}. Переходим к следующему.");
             }
+            else if (question.UserAnswer == null)
+                Console.WriteLine($"Вы не успели ответить на вопрос #{currentQuestion}. Ответ не засчитан");
+            else
+                Console.WriteLine($"Вы ответили на вопрос #{currentQuestion}. Переходим к следующему.");
 
-            int GetUserAnswer()
+            currentQuestion++;
+            Console.WriteLine();
+        }
+        
+        void GetUserAnswer(Question question)
+        {
+            while (true)
             {
-                while (true)
+                try
                 {
-                    try
-                    {
-                        return int.Parse(Console.ReadLine());
-                    }
-                    catch (FormatException)
-                    {
-                        Console.WriteLine("Неправильный формат ответа. Введите целочисленное значение!");
-                    }
-                    catch (OverflowException)
-                    {
-                        Console.WriteLine("Неправильный формат ответа. Введите число от -2*10^9 до 2*10^9");
-                    }
+                    question.UserAnswer = int.Parse(Console.ReadLine());
+                    break;
+                }
+                catch (FormatException)
+                {
+                    Console.WriteLine("Неправильный формат ответа. Введите целочисленное значение!");
+                }
+                catch (OverflowException)
+                {
+                    Console.WriteLine("Неправильный формат ответа. Введите число от -2*10^9 до 2*10^9");
                 }
             }
         }
-        
     }
-    public static void ShowResult(int finalScore, int totalQuestionsNum, string userName, out string level)
+    public static void ShowResult(User user, QuestionsStorage questions, int finalScore, UserResultsStorage userResults)
     {
-        level = "";
-        int percentScore = finalScore * 100 / totalQuestionsNum;
+        string level = "";
+        int percentScore = finalScore * 100 / questions.Count;
         switch (percentScore)
         {
             case 100:
@@ -179,14 +131,18 @@ class Program
                 level = "Идиот";
                 break;
         }
-        Console.WriteLine($"Поздравляем {userName}, вы окончили тестирование \"Гений-Идиот\"! Суммарное количество правильных ответов - {finalScore}. Ваш результат - {level}");
+
+        var result = new UserResult(level, finalScore);
+        userResults.Add(result);
+        
+        Console.WriteLine($"Поздравляем {user.Name}, вы окончили тестирование \"Гений-Идиот\"! Суммарное количество правильных ответов - {finalScore}. Ваш результат - {level}");
     }
-    public static void SaveScoreInFile(int finalScore, string userName, string level)
+    public static void SaveScoreInFile(User user, UserResultsStorage results)
     {
+        var lastResult = results.Results.Last();
         string path = "/Users/aleksandr/RiderProjects/Genius_Idiot_App/Genius_Idiot_Console_App/user_results.txt";
         var writer = new StreamWriter(path, true, Encoding.UTF8);
-        var date = DateTime.Today;
-        writer.WriteLine($"{userName}-{finalScore}-{level}-{date}");
+        writer.WriteLine($"{user.Name}-{lastResult.Score}-{lastResult.Level}-{lastResult.Date}");
         writer.Close();
     }
     private static void ShowPreviousResults()
