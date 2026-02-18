@@ -19,7 +19,8 @@ class Program
             ShowResult(user, questions, finalScore, userResults);
             fileService.SaveResultsInFile(user, userResults);
             fileService.ShowPreviousResults();
-            fileService.AddQuestionInFile();
+            //fileService.AddQuestionInFile();
+            fileService.RemoveQuestion();
         } while (AskToContinueTest());
         
         
