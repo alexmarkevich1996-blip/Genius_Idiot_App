@@ -6,13 +6,12 @@ class Program
 {
     static void Main(string[] args)
     {
-        var user = new User();
-        var questions = new QuestionsStorage();
-        var userResults = new UserResultsStorage();
-        var fileService = new FileService();
-        
         do
         {
+            var fileService = new FileService();
+            var user = new User();
+            var questions = new QuestionsStorage(fileService);
+            var userResults = new UserResultsStorage();
             ShowTestingRules();
             PrepareBeforeTesting();
             int finalScore = 0;
@@ -20,6 +19,7 @@ class Program
             ShowResult(user, questions, finalScore, userResults);
             fileService.SaveResultsInFile(user, userResults);
             fileService.ShowPreviousResults();
+            fileService.AddQuestionInFile();
         } while (AskToContinueTest());
         
         
@@ -34,7 +34,6 @@ class Program
             return false;
         }
     }
-
     public static void ShowTestingRules()
     {
         Console.WriteLine();
@@ -58,7 +57,6 @@ class Program
             Console.WriteLine("Неверное ключевое слово. Повторите, пожалуйста, попытку.");
         }
     }
-
     public static void TestErudition(QuestionsStorage questionsStorage, User user, out int score)
     {
         questionsStorage.ShuffleQuestions();
