@@ -17,10 +17,28 @@ class Program
             int finalScore = 0;
             TestErudition(questions, user, out finalScore);
             ShowResult(user, questions, finalScore, userResults);
-            fileService.SaveResultsInFile(user, userResults);
-            fileService.ShowPreviousResults();
-            //fileService.AddQuestionInFile();
-            fileService.RemoveQuestion();
+            fileService.SaveResultsInFile(user, userResults); ;
+            Console.WriteLine("Введите один из возможных вариантов\n" +
+                              "1. Показать все предыдущие результаты;\n" +
+                              "2. Добавить новый вопрос в тест;\n" +
+                              "3. Удалить существующий вопрос из теста;\n");
+            int numChoice = int.Parse(Console.ReadLine());
+
+            switch (numChoice)
+            {
+                case 1:
+                    fileService.ShowPreviousResults();
+                    break;
+                case 2:
+                    fileService.AddQuestionInFile();
+                    break;
+                case 3:
+                    fileService.RemoveQuestion();
+                    break;
+                default:
+                    Console.WriteLine("Выбран неверный вариант");
+                    break;
+            }
         } while (AskToContinueTest());
         
         
