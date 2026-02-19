@@ -6,6 +6,7 @@ public class FileService
 {
     private readonly string userResultsFilePath;
     private readonly string questionsListFilePath;
+    private readonly string basePath;
     private StreamWriter resultsWriter;
     private StreamReader resultsReader;
     private StreamWriter questionsWriter;
@@ -13,8 +14,9 @@ public class FileService
     
     public FileService()
     {
-        userResultsFilePath = "/Users/aleksandr/RiderProjects/Genius_Idiot_App/Genius_Idiot_Console_App/user_results.txt";
-        questionsListFilePath = "/Users/aleksandr/RiderProjects/Genius_Idiot_App/Genius_Idiot_Console_App/questions.txt";
+        basePath = AppDomain.CurrentDomain.BaseDirectory;
+        userResultsFilePath = Path.Combine(basePath, "questions.txt");
+        questionsListFilePath = Path.Combine(basePath, "results.txt");
         
 
         var hasFileQuestions = File.Exists(questionsListFilePath) && new FileInfo(questionsListFilePath).Length > 0;
