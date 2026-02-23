@@ -20,7 +20,12 @@ class Program
             WaitForUserReady();
             int finalScore = 0;
             TestErudition(questions, user, out finalScore);
-            ShowResult(user, questions, finalScore, userResults);
+
+            var level = LevelCalculator.Calculate(finalScore, questions.Count);
+            userResults.Add(level, finalScore);
+            var lastResult = userResults.GetLastResult();
+            ShowResult(user, lastResult);
+
             fileService.SaveResultsInFile(user, userResults); ;
             Console.WriteLine("Введите один из возможных вариантов\n" +
                               "1. Показать все предыдущие результаты;\n" +
@@ -128,35 +133,9 @@ class Program
             }
         }
     }
-    public static void ShowResult(User user, QuestionsStorage questions, int finalScore, UserResultsStorage userResults)
+    public static void ShowResult(User user, UserResult lastResult)
     {
-        string level = "";
-        int percentScore = finalScore * 100 / questions.Count;
-        switch (percentScore)
-        {
-            case 100:
-                level = "Гений";
-                break;
-            case >= 80 and < 100:
-                level = "Талант";
-                break;
-            case >= 60 and < 80:
-                level = "Нормальный";
-                break;
-            case >= 40 and < 60:
-                level = "Дурак";
-                break;
-            case >= 20 and < 40:
-                level = "Кретин";
-                break;
-            case < 20:
-                level = "Идиот";
-                break;
-        }
-
-        var result = new UserResult(level, finalScore);
-        userResults.Add(result);
         
-        Console.WriteLine($"Поздравляем {user.Name}, вы окончили тестирование \"Гений-Идиот\"! Суммарное количество правильных ответов - {finalScore}. Ваш результат - {level}");
+        Console.WriteLine($"Поздравляем {user.Name}, вы окончили тестирование \"Гений-Идиот\"! Суммарное количество правильных ответов - {lastResult.Score}. Ваш результат - {lastResult.Level}");
     }
 }

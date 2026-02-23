@@ -1,4 +1,4 @@
-namespace Genius_Idiot_Console_App;
+namespace Genius_Idiot_Core;
 
 public class UserResult
 {

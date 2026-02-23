@@ -1,4 +1,6 @@
-namespace Genius_Idiot_Console_App;
+using System.Reflection.Emit;
+
+namespace Genius_Idiot_Core;
 
 public class UserResultsStorage
 {
@@ -9,8 +11,15 @@ public class UserResultsStorage
         Results = new List<UserResult>();
     }
 
-    public void Add(UserResult result)
+    public void Add(string level, int finalScore)
     {
+        var result = new UserResult(level, finalScore);
         Results.Add(result);
+    }
+
+    public UserResult GetLastResult()
+    {
+        UserResult lastResult = Results.Last();
+        return lastResult;
     }
 }

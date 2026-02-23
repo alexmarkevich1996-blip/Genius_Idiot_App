@@ -1,4 +1,4 @@
-namespace Genius_Idiot_Console_App;
+namespace Genius_Idiot_Core;
 
 public class User
 {
@@ -36,10 +36,5 @@ public class User
                 return userName;
             }
         }
-    }
-
-    public void AcceptRightAnswer()
-    {
-        throw new NotImplementedException();
     }
 }

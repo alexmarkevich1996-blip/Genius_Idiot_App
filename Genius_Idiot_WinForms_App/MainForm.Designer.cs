@@ -1,4 +1,4 @@
-﻿using Genius_Idiot_Console_App;
+﻿using Genius_Idiot_Core;
 
 namespace Genius_Idiot_WinForms_App
 {

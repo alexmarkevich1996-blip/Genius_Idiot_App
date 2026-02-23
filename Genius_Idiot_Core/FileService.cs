@@ -1,6 +1,6 @@
 using System.Text;
 
-namespace Genius_Idiot_Console_App;
+namespace Genius_Idiot_Core;
 
 public class FileService
 {
@@ -15,8 +15,8 @@ public class FileService
     public FileService()
     {
         basePath = AppDomain.CurrentDomain.BaseDirectory;
-        userResultsFilePath = Path.Combine(basePath, "questions.txt");
-        questionsListFilePath = Path.Combine(basePath, "results.txt");
+        userResultsFilePath = Path.Combine(basePath, "results.txt");
+        questionsListFilePath = Path.Combine(basePath, "questions.txt");
         
 
         var hasFileQuestions = File.Exists(questionsListFilePath) && new FileInfo(questionsListFilePath).Length > 0;

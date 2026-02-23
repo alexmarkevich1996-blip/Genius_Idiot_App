@@ -1,4 +1,4 @@
-using Genius_Idiot_Console_App;
+using Genius_Idiot_Core;
 
 namespace Genius_Idiot_WinForms_App
 {
@@ -6,8 +6,10 @@ namespace Genius_Idiot_WinForms_App
     {
         private List<Question> questions;
         private Question currentQuestion;
+        private int countQuestions;
         private User user;
         private int score;
+        private int questionNumber;
         public MainForm()
         {
             InitializeComponent();
@@ -17,14 +19,11 @@ namespace Genius_Idiot_WinForms_App
         private void MainForm_Load(object? sender, EventArgs e)
         {
             questions = QuestionsStorage.GetQuestions();
+            countQuestions = questions.Count;
             user = new User("Неизвестно");
             score = 0;
+            questionNumber = 1;
 
-            var endGame = questions.Count == 0;
-            if (endGame)
-            {
-
-            }
             ShowNextQuestion();
             
         }
@@ -34,6 +33,8 @@ namespace Genius_Idiot_WinForms_App
             questions = QuestionsStorage.ShuffleQuestions(questions);
             currentQuestion = questions[0];
             questionTextLabel.Text = questions[0].Text;
+            questionNumberLabel.Text = $"Вопрос #{questionNumber}";
+            questionNumber++;
         }
 
         private void nextButton_Click(object sender, EventArgs e)
@@ -43,9 +44,17 @@ namespace Genius_Idiot_WinForms_App
 
             if (userAnswer == rightAnswer)
             {
-                user.AcceptRightAnswer();
+                score++;
             }
             questions.Remove(currentQuestion);
+
+            var endGame = questions.Count == 0;
+            if (endGame)
+            {
+                string level = LevelCalculator.Calculate(score, countQuestions);
+                MessageBox.Show(level);
+                return;
+            }
 
             ShowNextQuestion();
         }
