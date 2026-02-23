@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using Genius_Idiot_Core;
+using System.Text;
 
 namespace Genius_Idiot_Console_App;
 
@@ -13,10 +14,10 @@ class Program
         {
             var fileService = new FileService();
             var user = new User();
-            var questions = new QuestionsStorage(fileService);
+            var questions = new QuestionsStorage();
             var userResults = new UserResultsStorage();
-            ShowTestingRules();
-            PrepareBeforeTesting();
+            ShowTestRules();
+            WaitForUserReady();
             int finalScore = 0;
             TestErudition(questions, user, out finalScore);
             ShowResult(user, questions, finalScore, userResults);
@@ -56,32 +57,32 @@ class Program
             return false;
         }
     }
-    public static void ShowTestingRules()
+    public static void ShowTestRules()
     {
         Console.WriteLine();
-        Console.WriteLine("Приветствуем вас на тестировании “Гений-Идиот”. На данном тестировании мы попросим вас ответить всего на 5 вопросов. \n" +
-                          "Каждый из них представляет собой логическую задачу, где ответом должно быть какое-то число. \n" +
-                          "По каждому из вопросов вы должно ввести ответ в течении 10 секунд. \n" +
-                          "Если вы не успеете ввести ответ, то система не засчитает вам баллы за вопрос и вы перейдете к следующему. \n" +
-                          "По окончанию всех вопросов программа оценит количество правильных ответов и по ним определит уровень вашей эрудиции. Удачи вам!");
+        var rules = new TestRules();
+        Console.WriteLine(rules.Description);
         Console.WriteLine();
     }
-    public static void PrepareBeforeTesting()
+    public static void WaitForUserReady()
     {
         Console.WriteLine("Введите ключевое слово “Ready”, если поняли и приняли правила тестирования. \n" +
                           "Тестирование не начнется, покуда вы не введете ключевое слово. ");
 
         while (true)
         {
-            string keyword = Console.ReadLine().ToLower();
-            if (keyword == "ready")
+            var userInput = Console.ReadLine().ToLower();
+            var readinessChecker = new ReadinessChecker();
+            
+            if (readinessChecker.IsUserReady(userInput))
                 break;
+
             Console.WriteLine("Неверное ключевое слово. Повторите, пожалуйста, попытку.");
         }
     }
     public static void TestErudition(QuestionsStorage questionsStorage, User user, out int score)
     {
-        questionsStorage.ShuffleQuestions();
+        questionsStorage.Questions = QuestionsStorage.ShuffleQuestions(questionsStorage.Questions);
         
         score = 0;
         int currentQuestion = 1;

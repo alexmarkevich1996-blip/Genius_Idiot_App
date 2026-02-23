@@ -10,7 +10,7 @@ public class FileService
     private StreamWriter resultsWriter;
     private StreamReader resultsReader;
     private StreamWriter questionsWriter;
-    private StreamReader questionsReader;
+    private static StreamReader questionsReader;
     
     public FileService()
     {
@@ -40,8 +40,9 @@ public class FileService
         resultsWriter.Close();
     }
 
-    public void ReadQuestionsFromFile(List<Question> questions)
+    public List<Question> ReadQuestionsFromFile()
     {
+        var questions = new List<Question>();
         questionsReader = new StreamReader(questionsListFilePath, Encoding.UTF8);
         while (!questionsReader.EndOfStream)
         {
@@ -52,6 +53,8 @@ public class FileService
             questions.Add(new Question(question, answer));
         }
         questionsReader.Close();
+
+        return questions;
     }
     public void ShowPreviousResults()
     {

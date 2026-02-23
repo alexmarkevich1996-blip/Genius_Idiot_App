@@ -10,6 +10,12 @@ public class User
         Name = SetUserName();
         userResults = new UserResultsStorage();
     }
+
+    public User(string name)
+    {
+        Name = name;
+        userResults = new UserResultsStorage();
+    }
     private string SetUserName()
     {
         while (true)
@@ -30,5 +36,10 @@ public class User
                 return userName;
             }
         }
+    }
+
+    public void AcceptRightAnswer()
+    {
+        throw new NotImplementedException();
     }
 }
