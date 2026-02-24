@@ -2,9 +2,8 @@ using Genius_Idiot_Core;
 
 namespace Genius_Idiot_WinForms_App
 {
-    public partial class MainForm : Form
+    public partial class QuestionsForm : Form
     {
-        private IntroductionForm introForm;
         private List<Question> questions;
         private Question currentQuestion;
         private int countQuestions;
@@ -12,13 +11,12 @@ namespace Genius_Idiot_WinForms_App
         private int score;
         private int questionNumber;
 
-        public MainForm(IntroductionForm introForm)
+        public QuestionsForm()
         {
             InitializeComponent();
-            this.introForm = introForm;
         }
 
-        private void MainForm_Load(object? sender, EventArgs e)
+        private void QuestionsForm_Load(object? sender, EventArgs e)
         {
             questions = QuestionsStorage.GetQuestions();
             countQuestions = questions.Count;
@@ -50,11 +48,12 @@ namespace Genius_Idiot_WinForms_App
             questions.Remove(currentQuestion);
 
             var endGame = questions.Count == 0;
+
             if (endGame)
             {
                 string level = LevelCalculator.Calculate(score, countQuestions);
                 MessageBox.Show(level);
-                introForm.Close();
+                Close();
                 return;
             }
 

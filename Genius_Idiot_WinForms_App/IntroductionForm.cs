@@ -30,9 +30,7 @@ namespace Genius_Idiot_WinForms_App
 
             if (TestRules.IsUserReady(userReadinessAnswer))
             {
-                var mainForm = new MainForm(this);
-                Hide();
-                mainForm.Show();
+                Close();
                 return;
             }
 

@@ -2,7 +2,7 @@
 
 namespace Genius_Idiot_WinForms_App
 {
-    partial class MainForm
+    partial class QuestionsForm
     {
         /// <summary>
         ///  Required designer variable.
@@ -76,7 +76,7 @@ namespace Genius_Idiot_WinForms_App
             userAnswerTextBox.Size = new Size(199, 23);
             userAnswerTextBox.TabIndex = 3;
             // 
-            // MainForm
+            // QuestionsForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
@@ -85,10 +85,10 @@ namespace Genius_Idiot_WinForms_App
             Controls.Add(questionTextLabel);
             Controls.Add(questionNumberLabel);
             Controls.Add(nextButton);
-            Name = "MainForm";
+            Name = "QuestionsForm";
             Text = "Genius-Idiot";
             TopMost = true;
-            Load += MainForm_Load;
+            Load += QuestionsForm_Load;
             ResumeLayout(false);
             PerformLayout();
         }
