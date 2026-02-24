@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Genius_Idiot_Core;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -15,6 +16,27 @@ namespace Genius_Idiot_WinForms_App
         public IntroductionForm()
         {
             InitializeComponent();
+        }
+
+        private void IntroductionForm_Load(object sender, EventArgs e)
+        {
+            testRulesLabel.Text = TestRules.GetGeneralRules();
+            userReadyRulesLabel.Text = TestRules.GetUserReadyRules();
+        }
+
+        private void ReadyForTestButton_Click(object sender, EventArgs e)
+        {
+            var userReadinessAnswer = userReadinessTextBox.Text;
+
+            if (TestRules.IsUserReady(userReadinessAnswer))
+            {
+                var mainForm = new MainForm(this);
+                Hide();
+                mainForm.Show();
+                return;
+            }
+
+            MessageBox.Show(TestRules.GetWrongKeywordMessage());
         }
     }
 }

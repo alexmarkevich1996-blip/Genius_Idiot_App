@@ -43,9 +43,10 @@ namespace Genius_Idiot_WinForms_App
             nextButton.Name = "nextButton";
             nextButton.Size = new Size(182, 112);
             nextButton.TabIndex = 0;
+            nextButton.TabStop = false;
             nextButton.Text = "Next";
             nextButton.UseVisualStyleBackColor = true;
-            nextButton.Click += nextButton_Click;
+            nextButton.Click += NextButton_Click;
             // 
             // questionNumberLabel
             // 
@@ -79,13 +80,14 @@ namespace Genius_Idiot_WinForms_App
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(545, 385);
+            ClientSize = new Size(683, 458);
             Controls.Add(userAnswerTextBox);
             Controls.Add(questionTextLabel);
             Controls.Add(questionNumberLabel);
             Controls.Add(nextButton);
             Name = "MainForm";
             Text = "Genius-Idiot";
+            TopMost = true;
             Load += MainForm_Load;
             ResumeLayout(false);
             PerformLayout();

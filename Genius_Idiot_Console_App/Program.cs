@@ -65,24 +65,21 @@ class Program
     public static void ShowTestRules()
     {
         Console.WriteLine();
-        var rules = new TestRules();
-        Console.WriteLine(rules.Description);
+        Console.WriteLine(TestRules.GetGeneralRules());
         Console.WriteLine();
     }
     public static void WaitForUserReady()
     {
-        Console.WriteLine("Введите ключевое слово “Ready”, если поняли и приняли правила тестирования. \n" +
-                          "Тестирование не начнется, покуда вы не введете ключевое слово. ");
+        Console.WriteLine(TestRules.GetUserReadyRules());
 
         while (true)
         {
             var userInput = Console.ReadLine().ToLower();
-            var readinessChecker = new ReadinessChecker();
             
-            if (readinessChecker.IsUserReady(userInput))
+            if (TestRules.IsUserReady(userInput))
                 break;
 
-            Console.WriteLine("Неверное ключевое слово. Повторите, пожалуйста, попытку.");
+            Console.WriteLine(TestRules.GetWrongKeywordMessage());
         }
     }
     public static void TestErudition(QuestionsStorage questionsStorage, User user, out int score)

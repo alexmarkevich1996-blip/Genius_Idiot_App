@@ -4,16 +4,18 @@ namespace Genius_Idiot_WinForms_App
 {
     public partial class MainForm : Form
     {
+        private IntroductionForm introForm;
         private List<Question> questions;
         private Question currentQuestion;
         private int countQuestions;
         private User user;
         private int score;
         private int questionNumber;
-        public MainForm()
+
+        public MainForm(IntroductionForm introForm)
         {
             InitializeComponent();
-
+            this.introForm = introForm;
         }
 
         private void MainForm_Load(object? sender, EventArgs e)
@@ -24,8 +26,7 @@ namespace Genius_Idiot_WinForms_App
             score = 0;
             questionNumber = 1;
 
-            ShowNextQuestion();
-            
+            ShowNextQuestion();   
         }
 
         private void ShowNextQuestion()
@@ -37,7 +38,7 @@ namespace Genius_Idiot_WinForms_App
             questionNumber++;
         }
 
-        private void nextButton_Click(object sender, EventArgs e)
+        private void NextButton_Click(object sender, EventArgs e)
         {
             var userAnswer = Convert.ToInt32(userAnswerTextBox.Text);
             var rightAnswer = currentQuestion.Answer;
@@ -53,6 +54,7 @@ namespace Genius_Idiot_WinForms_App
             {
                 string level = LevelCalculator.Calculate(score, countQuestions);
                 MessageBox.Show(level);
+                introForm.Close();
                 return;
             }
 
