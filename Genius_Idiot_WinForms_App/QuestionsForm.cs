@@ -4,23 +4,29 @@ namespace Genius_Idiot_WinForms_App
 {
     public partial class QuestionsForm : Form
     {
+        private FileService fileService;
+        private User user;
+        private QuestionsStorage questionsStorage;
+        private UserResultsStorage userResultsStorage;
         private List<Question> questions;
         private Question currentQuestion;
         private int countQuestions;
-        private User user;
         private int score;
         private int questionNumber;
 
         public QuestionsForm()
         {
             InitializeComponent();
+            fileService = new FileService();
+            user = new User();
+            questionsStorage = new QuestionsStorage(fileService);
+            userResultsStorage = new UserResultsStorage();
         }
 
         private void QuestionsForm_Load(object? sender, EventArgs e)
         {
-            questions = QuestionsStorage.GetQuestions();
-            countQuestions = questions.Count;
-            user = new User("Неизвестно");
+            questions = questionsStorage.Questions;
+            countQuestions = questionsStorage.Count;
             score = 0;
             questionNumber = 1;
 
@@ -29,7 +35,7 @@ namespace Genius_Idiot_WinForms_App
 
         private void ShowNextQuestion()
         {
-            questions = QuestionsStorage.ShuffleQuestions(questions);
+            questions = questionsStorage.ShuffleQuestions(questions);
             currentQuestion = questions[0];
             questionTextLabel.Text = questions[0].Text;
             questionNumberLabel.Text = $"Вопрос #{questionNumber}";
@@ -53,6 +59,8 @@ namespace Genius_Idiot_WinForms_App
             {
                 string level = LevelCalculator.Calculate(score, countQuestions);
                 MessageBox.Show(level);
+                userResultsStorage.Add(level, score);
+                fileService.SaveResultsInFile(user, userResultsStorage);
                 Close();
                 return;
             }

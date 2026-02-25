@@ -29,7 +29,10 @@ namespace Genius_Idiot_WinForms_App
         }
         private void showAllResultsButton_Click(object sender, EventArgs e)
         {
-
+            var userResultForm = new UserResultsForm();
+            Hide();
+            userResultForm.ShowDialog();
+            Show();
         }
 
         private void exitButton_Click(object sender, EventArgs e)

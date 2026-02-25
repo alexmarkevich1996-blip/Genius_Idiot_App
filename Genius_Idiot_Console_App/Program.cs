@@ -13,8 +13,9 @@ class Program
         do
         {
             var fileService = new FileService();
-            var user = new User();
-            var questions = new QuestionsStorage();
+            string userName = SetUserName();
+            var user = new User(userName);
+            var questions = new QuestionsStorage(fileService);
             var userResults = new UserResultsStorage();
             ShowTestRules();
             WaitForUserReady();
@@ -26,7 +27,7 @@ class Program
             var lastResult = userResults.GetLastResult();
             ShowResult(user, lastResult);
 
-            fileService.SaveResultsInFile(user, userResults); ;
+            fileService.SaveResultsInFile(user, userResults);
             Console.WriteLine("Введите один из возможных вариантов\n" +
                               "1. Показать все предыдущие результаты;\n" +
                               "2. Добавить новый вопрос в тест;\n" +
@@ -36,7 +37,7 @@ class Program
             switch (numChoice)
             {
                 case 1:
-                    fileService.ShowPreviousResults();
+                    fileService.GetPreviousResults();
                     break;
                 case 2:
                     fileService.AddQuestionInFile();
@@ -60,6 +61,27 @@ class Program
                 return true;
 
             return false;
+        }
+        string SetUserName()
+        {
+            while (true)
+            {
+                Console.Write("Пожалуйста, введите ваше имя: ");
+                string userName = Console.ReadLine();
+                if (userName == string.Empty)
+                {
+                    Console.WriteLine("Вы не ввели имя. Просим вас повторить попытку.");
+                }
+                else if (userName.Contains('-'))
+                {
+                    Console.WriteLine($"Недопустимо писать имя со спец символом \"-\"");
+                }
+                else
+                {
+                    Console.WriteLine($"Добро пожаловать, {userName}!");
+                    return userName;
+                }
+            }
         }
     }
     public static void ShowTestRules()

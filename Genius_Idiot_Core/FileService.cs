@@ -4,37 +4,44 @@ namespace Genius_Idiot_Core;
 
 public class FileService
 {
-    private readonly string userResultsFilePath;
-    private readonly string questionsListFilePath;
-    private readonly string basePath;
+    private readonly string resultsPath;
+    private readonly string questionsPath;
     private StreamWriter resultsWriter;
     private StreamReader resultsReader;
     private StreamWriter questionsWriter;
-    private static StreamReader questionsReader;
+    private StreamReader questionsReader;
     
     public FileService()
     {
-        basePath = AppDomain.CurrentDomain.BaseDirectory;
-        userResultsFilePath = Path.Combine(basePath, "results.txt");
-        questionsListFilePath = Path.Combine(basePath, "questions.txt");
-        
+        var baseDir = AppDomain.CurrentDomain.BaseDirectory;
+        var dataDir = Path.Combine(baseDir, "Data");
+        Directory.CreateDirectory(dataDir);
+        questionsPath = Path.Combine(dataDir, "questions.txt");
 
-        var hasFileQuestions = File.Exists(questionsListFilePath) && new FileInfo(questionsListFilePath).Length > 0;
+        var appDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),"GeniusIdiot");
+        Directory.CreateDirectory(appDir);
+
+        resultsPath = Path.Combine(appDir, "results.txt");
+
+
+
+        var hasFileQuestions = File.Exists(questionsPath) && new FileInfo(questionsPath).Length > 0;
         if (!hasFileQuestions)
         {
-            questionsWriter = new StreamWriter(questionsListFilePath, true, Encoding.UTF8);
-            questionsWriter.WriteLine("Сколько будет два плюс два умноженное на два?|6\n"+
-                                      "Бревно нужно распилить на 10 частей, сколько надо сделать распилов?|9\n"+
-                                      "На двух руках 10 пальцев. Сколько пальцев на 5 руках?|25\n"+
-                                      "Укол делают каждые полчаса, сколько нужно минут для трех уколов?|60\n"+
-                                      "Пять свечей горело, две потухли. Сколько свечей осталось?|5");
-            questionsWriter.Close();
+            File.WriteAllLines(questionsPath, new[]
+            {
+                "Сколько будет два плюс два умноженное на два?|6",
+                "Бревно нужно распилить на 10 частей, сколько надо сделать распилов?|9",
+                "На двух руках 10 пальцев. Сколько пальцев на 5 руках?|25",
+                "Укол делают каждые полчаса, сколько нужно минут для трех уколов?|60",
+                "Пять свечей горело, две потухли. Сколько свечей осталось?|5"
+            }, Encoding.UTF8);
         }
-        
+
     }
     public void SaveResultsInFile(User user, UserResultsStorage results)
     {
-        resultsWriter = new StreamWriter(userResultsFilePath, true, Encoding.UTF8);
+        resultsWriter = new StreamWriter(resultsPath, true, Encoding.UTF8);
         var lastResult = results.Results.Last();
         resultsWriter.WriteLine($"{user.Name}-{lastResult.Score}-{lastResult.Level}-{lastResult.Date}");
         resultsWriter.Close();
@@ -43,7 +50,7 @@ public class FileService
     public List<Question> ReadQuestionsFromFile()
     {
         var questions = new List<Question>();
-        questionsReader = new StreamReader(questionsListFilePath, Encoding.UTF8);
+        questionsReader = new StreamReader(questionsPath, Encoding.UTF8);
         while (!questionsReader.EndOfStream)
         {
             string line = questionsReader.ReadLine();
@@ -56,28 +63,25 @@ public class FileService
 
         return questions;
     }
-    public void ShowPreviousResults()
+    public List<UserResult> GetPreviousResults()
     {
-        Console.WriteLine("Хотите просмотреть предыдущие результат? Введите \"ДА\" для продолжения: ");
-        string answer = Console.ReadLine().ToLower();
-
-        if (answer.ToLower() != "да")
-            return; 
+        var userResults = new List<UserResult>();
+        //Console.WriteLine("{0,-20}{1,18}{2,15}{3,15}", "Имя","Кол-во правильных ответов","Результат","Дата");
         
-        Console.WriteLine("{0,-20}{1,18}{2,15}{3,15}", "Имя","Кол-во правильных ответов","Результат","Дата");
-        
-        resultsReader = new StreamReader(userResultsFilePath, Encoding.UTF8);
+        resultsReader = new StreamReader(resultsPath, Encoding.UTF8);
         while (!resultsReader.EndOfStream)
         {
             string line = resultsReader.ReadLine();
             string[] lineParts = line.Split('-');
             string userName = lineParts[0];
-            string finalScore = lineParts[1];
+            int finalScore = int.Parse(lineParts[1]);
             string level = lineParts[2];
-            string date = lineParts[3];
-            Console.WriteLine("{0,-20}{1,15}{2,23}{3,32}", userName, finalScore, level, date);
+            DateTime date = DateTime.Parse(lineParts[3]);
+            userResults.Add(new UserResult(level, finalScore, date));
         }
         resultsReader.Close();
+
+        return userResults;
     }
 
     public void AddQuestionInFile()
@@ -86,7 +90,7 @@ public class FileService
         string inputQuestion = Console.ReadLine();
         Console.Write("Введите правильный ответ на вопрос: ");
         int inputAnswer = int.Parse(Console.ReadLine());
-        questionsWriter = new StreamWriter(questionsListFilePath, true, Encoding.UTF8);
+        questionsWriter = new StreamWriter(questionsPath, true, Encoding.UTF8);
         questionsWriter.WriteLine($"{inputQuestion}|{inputAnswer}");
         questionsWriter.Close();
     }
@@ -97,18 +101,18 @@ public class FileService
         Console.Write("Введите номер вопроса, который хотите удалить: ");
         int numQuestion = int.Parse(Console.ReadLine());
         int index = numQuestion - 1;
-        var lines = File.ReadAllLines(questionsListFilePath, Encoding.UTF8).ToList();
+        var lines = File.ReadAllLines(questionsPath, Encoding.UTF8).ToList();
 
         if (index >= 0 && index < lines.Count)
         {
             lines.RemoveAt(index);
-            File.WriteAllLines(questionsListFilePath, lines, Encoding.UTF8);
+            File.WriteAllLines(questionsPath, lines, Encoding.UTF8);
             Console.WriteLine("Вопрос был успешно удален!");
         }
         
         void ShowAllQuestions()
         {
-            questionsReader = new StreamReader(questionsListFilePath, Encoding.UTF8);
+            questionsReader = new StreamReader(questionsPath, Encoding.UTF8);
             int number = 1;
             while (!questionsReader.EndOfStream)
             {

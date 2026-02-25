@@ -2,17 +2,17 @@ namespace Genius_Idiot_Core;
 
 public class QuestionsStorage
 {
-    public List<Question> Questions { get; set; }
-    public FileService FileService { get; set; }
+    public List<Question> Questions { get; private set; }
+    private FileService fileService { get; set; }
     public int Count { get; private set; }
 
-    public QuestionsStorage()
+    public QuestionsStorage(FileService fileService)
     {
-        FileService = new FileService();
-        Questions = GetQuestions();
+        this.fileService = fileService;
+        Questions = fileService.ReadQuestionsFromFile();
         Count = Questions.Count;
     }
-    public static List<Question> ShuffleQuestions(List<Question> nonShuffledQuestions)
+    public List<Question> ShuffleQuestions(List<Question> nonShuffledQuestions)
     {
         Random random = new Random();
         var questions = nonShuffledQuestions;
@@ -23,11 +23,5 @@ public class QuestionsStorage
             (questions[i], questions[j]) = (questions[j], questions[i]);
         }
         return questions;
-    }
-
-    public static List<Question> GetQuestions()
-    {
-        var fileService = new FileService();
-        return fileService.ReadQuestionsFromFile();
     }
 }
