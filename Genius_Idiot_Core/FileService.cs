@@ -91,11 +91,8 @@ public class FileService
         questionsWriter.Close();
     }
 
-    public void RemoveQuestion()
+    public void RemoveQuestionFromFile(int numQuestion)
     {
-        ShowAllQuestions();
-        Console.Write("Введите номер вопроса, который хотите удалить: ");
-        int numQuestion = int.Parse(Console.ReadLine());
         int index = numQuestion - 1;
         var lines = File.ReadAllLines(questionsPath, Encoding.UTF8).ToList();
 
@@ -103,23 +100,6 @@ public class FileService
         {
             lines.RemoveAt(index);
             File.WriteAllLines(questionsPath, lines, Encoding.UTF8);
-            Console.WriteLine("Вопрос был успешно удален!");
-        }
-        
-        void ShowAllQuestions()
-        {
-            questionsReader = new StreamReader(questionsPath, Encoding.UTF8);
-            int number = 1;
-            while (!questionsReader.EndOfStream)
-            {
-                string line = questionsReader.ReadLine();
-                string[] lineParts = line.Split('|');
-                string question = lineParts[0];
-                Console.WriteLine($"{number}. {question}");
-                number++;
-            }
-            questionsReader.Close();
         }
     }
-
 }

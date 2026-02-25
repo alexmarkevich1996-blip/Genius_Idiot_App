@@ -31,6 +31,12 @@
             questionsListLabel = new Label();
             questionsListDataView = new DataGridView();
             returnToMenuButton = new Button();
+            addNewQuestionLabel = new Label();
+            questionWordingLabel = new Label();
+            questionWordingTextBox = new TextBox();
+            questionAnswerLabel = new Label();
+            questionAnswerTextBox = new TextBox();
+            addNewQuestionButton = new Button();
             ((System.ComponentModel.ISupportInitialize)questionsListDataView).BeginInit();
             SuspendLayout();
             // 
@@ -38,7 +44,7 @@
             // 
             questionsListLabel.AutoSize = true;
             questionsListLabel.Font = new Font("Segoe UI", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            questionsListLabel.Location = new Point(50, 28);
+            questionsListLabel.Location = new Point(59, 28);
             questionsListLabel.Name = "questionsListLabel";
             questionsListLabel.Size = new Size(187, 25);
             questionsListLabel.TabIndex = 0;
@@ -47,7 +53,7 @@
             // questionsListDataView
             // 
             questionsListDataView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            questionsListDataView.Location = new Point(50, 56);
+            questionsListDataView.Location = new Point(59, 56);
             questionsListDataView.Name = "questionsListDataView";
             questionsListDataView.Size = new Size(657, 218);
             questionsListDataView.TabIndex = 1;
@@ -63,11 +69,70 @@
             returnToMenuButton.UseVisualStyleBackColor = false;
             returnToMenuButton.Click += returnToMenuButton_Click;
             // 
+            // addNewQuestionLabel
+            // 
+            addNewQuestionLabel.AutoSize = true;
+            addNewQuestionLabel.Font = new Font("Segoe UI", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            addNewQuestionLabel.Location = new Point(59, 307);
+            addNewQuestionLabel.Name = "addNewQuestionLabel";
+            addNewQuestionLabel.Size = new Size(179, 25);
+            addNewQuestionLabel.TabIndex = 3;
+            addNewQuestionLabel.Text = "Add New Question";
+            // 
+            // questionWordingLabel
+            // 
+            questionWordingLabel.AutoSize = true;
+            questionWordingLabel.Location = new Point(59, 353);
+            questionWordingLabel.Name = "questionWordingLabel";
+            questionWordingLabel.Size = new Size(153, 15);
+            questionWordingLabel.TabIndex = 4;
+            questionWordingLabel.Text = "Enter the question wording:";
+            // 
+            // questionWordingTextBox
+            // 
+            questionWordingTextBox.Location = new Point(59, 371);
+            questionWordingTextBox.Name = "questionWordingTextBox";
+            questionWordingTextBox.Size = new Size(418, 23);
+            questionWordingTextBox.TabIndex = 5;
+            // 
+            // questionAnswerLabel
+            // 
+            questionAnswerLabel.AutoSize = true;
+            questionAnswerLabel.Location = new Point(59, 428);
+            questionAnswerLabel.Name = "questionAnswerLabel";
+            questionAnswerLabel.Size = new Size(164, 15);
+            questionAnswerLabel.TabIndex = 6;
+            questionAnswerLabel.Text = "Enter the answer for question:";
+            // 
+            // questionAnswerTextBox
+            // 
+            questionAnswerTextBox.Location = new Point(59, 446);
+            questionAnswerTextBox.Name = "questionAnswerTextBox";
+            questionAnswerTextBox.Size = new Size(418, 23);
+            questionAnswerTextBox.TabIndex = 7;
+            // 
+            // addNewQuestionButton
+            // 
+            addNewQuestionButton.BackColor = SystemColors.ActiveCaption;
+            addNewQuestionButton.Location = new Point(59, 498);
+            addNewQuestionButton.Name = "addNewQuestionButton";
+            addNewQuestionButton.Size = new Size(149, 41);
+            addNewQuestionButton.TabIndex = 8;
+            addNewQuestionButton.Text = "Add Question";
+            addNewQuestionButton.UseVisualStyleBackColor = false;
+            addNewQuestionButton.Click += addNewQuestionButton_Click;
+            // 
             // ManageQuestionsForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(824, 551);
+            Controls.Add(addNewQuestionButton);
+            Controls.Add(questionAnswerTextBox);
+            Controls.Add(questionAnswerLabel);
+            Controls.Add(questionWordingTextBox);
+            Controls.Add(questionWordingLabel);
+            Controls.Add(addNewQuestionLabel);
             Controls.Add(returnToMenuButton);
             Controls.Add(questionsListDataView);
             Controls.Add(questionsListLabel);
@@ -84,5 +149,11 @@
         private Label questionsListLabel;
         private DataGridView questionsListDataView;
         private Button returnToMenuButton;
+        private Label addNewQuestionLabel;
+        private Label questionWordingLabel;
+        private TextBox questionWordingTextBox;
+        private Label questionAnswerLabel;
+        private TextBox questionAnswerTextBox;
+        private Button addNewQuestionButton;
     }
 }

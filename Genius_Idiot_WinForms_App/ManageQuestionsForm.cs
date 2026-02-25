@@ -30,5 +30,20 @@ namespace Genius_Idiot_WinForms_App
         {
             Close();
         }
+
+        private void addNewQuestionButton_Click(object sender, EventArgs e)
+        {
+            var question = questionWordingTextBox.Text;
+            var answer = int.Parse(questionAnswerTextBox.Text);
+
+            if (!string.IsNullOrEmpty(question) && answer != null)
+            {
+                fileService.AddQuestionInFile(question, answer);
+                MessageBox.Show("Your question is successfully added");
+                return;
+            }
+
+            MessageBox.Show("Enter valid data!");
+        }
     }
 }
