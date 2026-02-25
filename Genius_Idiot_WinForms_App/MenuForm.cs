@@ -35,9 +35,19 @@ namespace Genius_Idiot_WinForms_App
             Show();
         }
 
+        private void manageQuestionsButton_Click(object sender, EventArgs e)
+        {
+            var manageQuestionsForm = new ManageQuestionsForm();
+            Hide();
+            manageQuestionsForm.ShowDialog();
+            Show();
+        }
+
         private void exitButton_Click(object sender, EventArgs e)
         {
             Close();
         }
+
+        
     }
 }

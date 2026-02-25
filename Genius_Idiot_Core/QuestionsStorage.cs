@@ -9,7 +9,7 @@ public class QuestionsStorage
     public QuestionsStorage(FileService fileService)
     {
         this.fileService = fileService;
-        Questions = fileService.ReadQuestionsFromFile();
+        Questions = fileService.GetQuestionsFromFile();
         Count = Questions.Count;
     }
     public List<Question> ShuffleQuestions(List<Question> nonShuffledQuestions)

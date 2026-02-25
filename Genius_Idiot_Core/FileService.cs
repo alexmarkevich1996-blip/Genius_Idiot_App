@@ -47,7 +47,7 @@ public class FileService
         resultsWriter.Close();
     }
 
-    public List<Question> ReadQuestionsFromFile()
+    public List<Question> GetQuestionsFromFile()
     {
         var questions = new List<Question>();
         questionsReader = new StreamReader(questionsPath, Encoding.UTF8);
@@ -84,14 +84,10 @@ public class FileService
         return userResults;
     }
 
-    public void AddQuestionInFile()
+    public void AddQuestionInFile(string question, int answer)
     {
-        Console.Write("Введите формулировку вопроса: ");
-        string inputQuestion = Console.ReadLine();
-        Console.Write("Введите правильный ответ на вопрос: ");
-        int inputAnswer = int.Parse(Console.ReadLine());
         questionsWriter = new StreamWriter(questionsPath, true, Encoding.UTF8);
-        questionsWriter.WriteLine($"{inputQuestion}|{inputAnswer}");
+        questionsWriter.WriteLine($"{question}|{answer}");
         questionsWriter.Close();
     }
 
@@ -125,4 +121,5 @@ public class FileService
             questionsReader.Close();
         }
     }
+
 }

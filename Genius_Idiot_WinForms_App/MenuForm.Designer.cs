@@ -31,8 +31,7 @@
             mainMenuLabel = new Label();
             initiateNewTestButton = new Button();
             showAllResultsButton = new Button();
-            addNewQuestionButton = new Button();
-            removeQuestionButton = new Button();
+            manageQuestionsButton = new Button();
             exitButton = new Button();
             SuspendLayout();
             // 
@@ -48,7 +47,7 @@
             // 
             // initiateNewTestButton
             // 
-            initiateNewTestButton.Location = new Point(62, 109);
+            initiateNewTestButton.Location = new Point(248, 124);
             initiateNewTestButton.Name = "initiateNewTestButton";
             initiateNewTestButton.Size = new Size(234, 38);
             initiateNewTestButton.TabIndex = 1;
@@ -58,7 +57,7 @@
             // 
             // showAllResultsButton
             // 
-            showAllResultsButton.Location = new Point(62, 166);
+            showAllResultsButton.Location = new Point(248, 181);
             showAllResultsButton.Name = "showAllResultsButton";
             showAllResultsButton.Size = new Size(234, 38);
             showAllResultsButton.TabIndex = 2;
@@ -66,28 +65,20 @@
             showAllResultsButton.UseVisualStyleBackColor = true;
             showAllResultsButton.Click += showAllResultsButton_Click;
             // 
-            // addNewQuestionButton
+            // manageQuestionsButton
             // 
-            addNewQuestionButton.Location = new Point(62, 225);
-            addNewQuestionButton.Name = "addNewQuestionButton";
-            addNewQuestionButton.Size = new Size(234, 38);
-            addNewQuestionButton.TabIndex = 3;
-            addNewQuestionButton.Text = "Add New Question";
-            addNewQuestionButton.UseVisualStyleBackColor = true;
-            // 
-            // removeQuestionButton
-            // 
-            removeQuestionButton.Location = new Point(62, 286);
-            removeQuestionButton.Name = "removeQuestionButton";
-            removeQuestionButton.Size = new Size(234, 38);
-            removeQuestionButton.TabIndex = 4;
-            removeQuestionButton.Text = "Remove Question";
-            removeQuestionButton.UseVisualStyleBackColor = true;
+            manageQuestionsButton.Location = new Point(248, 240);
+            manageQuestionsButton.Name = "manageQuestionsButton";
+            manageQuestionsButton.Size = new Size(234, 38);
+            manageQuestionsButton.TabIndex = 3;
+            manageQuestionsButton.Text = "Manage Questions (Add / Remove)";
+            manageQuestionsButton.UseVisualStyleBackColor = true;
+            manageQuestionsButton.Click += manageQuestionsButton_Click;
             // 
             // exitButton
             // 
             exitButton.BackColor = Color.LightCoral;
-            exitButton.Location = new Point(534, 371);
+            exitButton.Location = new Point(263, 311);
             exitButton.Name = "exitButton";
             exitButton.Size = new Size(199, 57);
             exitButton.TabIndex = 5;
@@ -101,8 +92,7 @@
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
             Controls.Add(exitButton);
-            Controls.Add(removeQuestionButton);
-            Controls.Add(addNewQuestionButton);
+            Controls.Add(manageQuestionsButton);
             Controls.Add(showAllResultsButton);
             Controls.Add(initiateNewTestButton);
             Controls.Add(mainMenuLabel);
@@ -117,8 +107,7 @@
         private Label mainMenuLabel;
         private Button initiateNewTestButton;
         private Button showAllResultsButton;
-        private Button addNewQuestionButton;
-        private Button removeQuestionButton;
+        private Button manageQuestionsButton;
         private Button exitButton;
     }
 }
