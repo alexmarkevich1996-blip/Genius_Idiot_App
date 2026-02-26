@@ -91,9 +91,8 @@ public class FileService
         questionsWriter.Close();
     }
 
-    public void RemoveQuestionFromFile(int numQuestion)
+    public void RemoveQuestionFromFile(int index)
     {
-        int index = numQuestion - 1;
         var lines = File.ReadAllLines(questionsPath, Encoding.UTF8).ToList();
 
         if (index >= 0 && index < lines.Count)

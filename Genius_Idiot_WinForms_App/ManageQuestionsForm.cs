@@ -40,10 +40,33 @@ namespace Genius_Idiot_WinForms_App
             {
                 fileService.AddQuestionInFile(question, answer);
                 MessageBox.Show("Your question is successfully added");
+                LoadQuestions();
                 return;
             }
 
             MessageBox.Show("Enter valid data!");
+        }
+
+        private void deleteSelectedQuestionButton_Click(object sender, EventArgs e)
+        {
+            if (questionsListDataView.SelectedRows.Count == 0)
+            {
+                MessageBox.Show("Please select a question to delete!");
+                return;
+            }
+
+            var selectedQuestion = questionsListDataView.SelectedRows[0].Index;
+            fileService.RemoveQuestionFromFile(selectedQuestion);
+            MessageBox.Show("Question is successfully deleted!");
+            LoadQuestions();
+
+        }
+
+        private void LoadQuestions()
+        {
+            var questions = fileService.GetQuestionsFromFile();
+            questionsListDataView.DataSource = null;
+            questionsListDataView.DataSource = questions;
         }
     }
 }

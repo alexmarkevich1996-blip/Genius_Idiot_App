@@ -37,6 +37,7 @@
             questionAnswerLabel = new Label();
             questionAnswerTextBox = new TextBox();
             addNewQuestionButton = new Button();
+            deleteSelectedQuestionButton = new Button();
             ((System.ComponentModel.ISupportInitialize)questionsListDataView).BeginInit();
             SuspendLayout();
             // 
@@ -54,13 +55,16 @@
             // 
             questionsListDataView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             questionsListDataView.Location = new Point(59, 56);
+            questionsListDataView.MultiSelect = false;
             questionsListDataView.Name = "questionsListDataView";
-            questionsListDataView.Size = new Size(657, 218);
+            questionsListDataView.ReadOnly = true;
+            questionsListDataView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            questionsListDataView.Size = new Size(612, 218);
             questionsListDataView.TabIndex = 1;
             // 
             // returnToMenuButton
             // 
-            returnToMenuButton.BackColor = Color.FromArgb(255, 128, 128);
+            returnToMenuButton.BackColor = Color.FromArgb(255, 192, 128);
             returnToMenuButton.Location = new Point(661, 471);
             returnToMenuButton.Name = "returnToMenuButton";
             returnToMenuButton.Size = new Size(151, 68);
@@ -122,11 +126,23 @@
             addNewQuestionButton.UseVisualStyleBackColor = false;
             addNewQuestionButton.Click += addNewQuestionButton_Click;
             // 
+            // deleteSelectedQuestionButton
+            // 
+            deleteSelectedQuestionButton.BackColor = Color.FromArgb(255, 128, 128);
+            deleteSelectedQuestionButton.Location = new Point(686, 143);
+            deleteSelectedQuestionButton.Name = "deleteSelectedQuestionButton";
+            deleteSelectedQuestionButton.Size = new Size(117, 51);
+            deleteSelectedQuestionButton.TabIndex = 9;
+            deleteSelectedQuestionButton.Text = "Delete Selected Question";
+            deleteSelectedQuestionButton.UseVisualStyleBackColor = false;
+            deleteSelectedQuestionButton.Click += deleteSelectedQuestionButton_Click;
+            // 
             // ManageQuestionsForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(824, 551);
+            Controls.Add(deleteSelectedQuestionButton);
             Controls.Add(addNewQuestionButton);
             Controls.Add(questionAnswerTextBox);
             Controls.Add(questionAnswerLabel);
@@ -155,5 +171,6 @@
         private Label questionAnswerLabel;
         private TextBox questionAnswerTextBox;
         private Button addNewQuestionButton;
+        private Button deleteSelectedQuestionButton;
     }
 }
