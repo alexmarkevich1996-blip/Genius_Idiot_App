@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using Genius_Idiot_Core;
+using System.Text;
 
 namespace Genius_Idiot_Console_App;
 
@@ -6,18 +7,27 @@ class Program
 {
     static void Main(string[] args)
     {
+        Console.OutputEncoding = Encoding.UTF8;
+        Console.InputEncoding = Encoding.UTF8;
+
         do
         {
             var fileService = new FileService();
-            var user = new User();
+            string userName = SetUserName();
+            var user = new User(userName);
             var questions = new QuestionsStorage(fileService);
             var userResults = new UserResultsStorage();
-            ShowTestingRules();
-            PrepareBeforeTesting();
+            ShowTestRules();
+            WaitForUserReady();
             int finalScore = 0;
             TestErudition(questions, user, out finalScore);
-            ShowResult(user, questions, finalScore, userResults);
-            fileService.SaveResultsInFile(user, userResults); ;
+
+            var level = LevelCalculator.Calculate(finalScore, questions.Count);
+            userResults.Add(level, finalScore);
+            var lastResult = userResults.GetLastResult();
+            ShowResult(user, lastResult);
+
+            fileService.SaveResultsInFile(user, userResults);
             Console.WriteLine("Введите один из возможных вариантов\n" +
                               "1. Показать все предыдущие результаты;\n" +
                               "2. Добавить новый вопрос в тест;\n" +
@@ -27,7 +37,7 @@ class Program
             switch (numChoice)
             {
                 case 1:
-                    fileService.ShowPreviousResults();
+                    fileService.GetPreviousResults();
                     break;
                 case 2:
                     fileService.AddQuestionInFile();
@@ -52,33 +62,51 @@ class Program
 
             return false;
         }
+        string SetUserName()
+        {
+            while (true)
+            {
+                Console.Write("Пожалуйста, введите ваше имя: ");
+                string userName = Console.ReadLine();
+                if (userName == string.Empty)
+                {
+                    Console.WriteLine("Вы не ввели имя. Просим вас повторить попытку.");
+                }
+                else if (userName.Contains('-'))
+                {
+                    Console.WriteLine($"Недопустимо писать имя со спец символом \"-\"");
+                }
+                else
+                {
+                    Console.WriteLine($"Добро пожаловать, {userName}!");
+                    return userName;
+                }
+            }
+        }
     }
-    public static void ShowTestingRules()
+    public static void ShowTestRules()
     {
         Console.WriteLine();
-        Console.WriteLine("Приветствуем вас на тестировании “Гений-Идиот”. На данном тестировании мы попросим вас ответить всего на 5 вопросов. \n" +
-                          "Каждый из них представляет собой логическую задачу, где ответом должно быть какое-то число. \n" +
-                          "По каждому из вопросов вы должно ввести ответ в течении 10 секунд. \n" +
-                          "Если вы не успеете ввести ответ, то система не засчитает вам баллы за вопрос и вы перейдете к следующему. \n" +
-                          "По окончанию всех вопросов программа оценит количество правильных ответов и по ним определит уровень вашей эрудиции. Удачи вам!");
+        Console.WriteLine(TestRules.GetGeneralRules());
         Console.WriteLine();
     }
-    public static void PrepareBeforeTesting()
+    public static void WaitForUserReady()
     {
-        Console.WriteLine("Введите ключевое слово “Ready”, если поняли и приняли правила тестирования. \n" +
-                          "Тестирование не начнется, покуда вы не введете ключевое слово. ");
+        Console.WriteLine(TestRules.GetUserReadyRules());
 
         while (true)
         {
-            string keyword = Console.ReadLine().ToLower();
-            if (keyword == "ready")
+            var userInput = Console.ReadLine().ToLower();
+            
+            if (TestRules.IsUserReady(userInput))
                 break;
-            Console.WriteLine("Неверное ключевое слово. Повторите, пожалуйста, попытку.");
+
+            Console.WriteLine(TestRules.GetWrongKeywordMessage());
         }
     }
     public static void TestErudition(QuestionsStorage questionsStorage, User user, out int score)
     {
-        questionsStorage.ShuffleQuestions();
+        questionsStorage.Questions = QuestionsStorage.ShuffleQuestions(questionsStorage.Questions);
         
         score = 0;
         int currentQuestion = 1;
@@ -124,35 +152,9 @@ class Program
             }
         }
     }
-    public static void ShowResult(User user, QuestionsStorage questions, int finalScore, UserResultsStorage userResults)
+    public static void ShowResult(User user, UserResult lastResult)
     {
-        string level = "";
-        int percentScore = finalScore * 100 / questions.Count;
-        switch (percentScore)
-        {
-            case 100:
-                level = "Гений";
-                break;
-            case >= 80 and < 100:
-                level = "Талант";
-                break;
-            case >= 60 and < 80:
-                level = "Нормальный";
-                break;
-            case >= 40 and < 60:
-                level = "Дурак";
-                break;
-            case >= 20 and < 40:
-                level = "Кретин";
-                break;
-            case < 20:
-                level = "Идиот";
-                break;
-        }
-
-        var result = new UserResult(level, finalScore);
-        userResults.Add(result);
         
-        Console.WriteLine($"Поздравляем {user.Name}, вы окончили тестирование \"Гений-Идиот\"! Суммарное количество правильных ответов - {finalScore}. Ваш результат - {level}");
+        Console.WriteLine($"Поздравляем {user.Name}, вы окончили тестирование \"Гений-Идиот\"! Суммарное количество правильных ответов - {lastResult.Score}. Ваш результат - {lastResult.Level}");
     }
 }
