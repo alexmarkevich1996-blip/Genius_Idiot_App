@@ -12,7 +12,7 @@ public class QuestionsStorage
         Questions = fileService.GetQuestionsFromFile();
         Count = Questions.Count;
     }
-    public List<Question> ShuffleQuestions(List<Question> nonShuffledQuestions)
+    public static List<Question> ShuffleQuestions(List<Question> nonShuffledQuestions)
     {
         Random random = new Random();
         var questions = nonShuffledQuestions;

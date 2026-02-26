@@ -46,8 +46,12 @@ namespace Genius_Idiot_WinForms_App
         private void exitButton_Click(object sender, EventArgs e)
         {
             Close();
+            Application.Exit();
         }
 
-        
+        private void MenuForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            Application.Exit();
+        }
     }
 }

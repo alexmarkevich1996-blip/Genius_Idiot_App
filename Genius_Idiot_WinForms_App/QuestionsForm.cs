@@ -35,7 +35,7 @@ namespace Genius_Idiot_WinForms_App
 
         private void ShowNextQuestion()
         {
-            questions = questionsStorage.ShuffleQuestions(questions);
+            questions = QuestionsStorage.ShuffleQuestions(questions);
             currentQuestion = questions[0];
             questionTextLabel.Text = questions[0].Text;
             questionNumberLabel.Text = $"Вопрос #{questionNumber}";

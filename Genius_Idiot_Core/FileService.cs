@@ -41,7 +41,7 @@ public class FileService
     }
     public void SaveResultsInFile(User user, UserResultsStorage results)
     {
-        resultsWriter = new StreamWriter(resultsPath, true, Encoding.UTF8);
+        using var resultsWriter = new StreamWriter(resultsPath, true, Encoding.UTF8);
         var lastResult = results.Results.Last();
         resultsWriter.WriteLine($"{user.Name}-{lastResult.Score}-{lastResult.Level}-{lastResult.Date}");
         resultsWriter.Close();
