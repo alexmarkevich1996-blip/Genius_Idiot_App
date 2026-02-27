@@ -6,14 +6,16 @@ public class UserResult
     public int Score { get; set; }
     public DateTime Date { get; set; }
 
-    public UserResult(string level, int score) : this(level, score, DateTime.Now)
-    {
-    }
+    public UserResult()
+    { }
 
     public UserResult(string level, int score, DateTime dateTime)
     {
         Level = level;
         Score = score;
         Date = dateTime;
+    }
+    public UserResult(string level, int score) : this(level, score, DateTime.Now)
+    {
     }
 }

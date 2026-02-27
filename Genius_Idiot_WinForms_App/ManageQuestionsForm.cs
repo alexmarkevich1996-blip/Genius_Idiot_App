@@ -33,13 +33,14 @@ namespace Genius_Idiot_WinForms_App
 
         private void addNewQuestionButton_Click(object sender, EventArgs e)
         {
-            var question = questionWordingTextBox.Text;
+            var questionText = questionWordingTextBox.Text;
             var answer = int.Parse(questionAnswerTextBox.Text);
 
-            if (!string.IsNullOrEmpty(question) && answer != null)
+            if (!string.IsNullOrEmpty(questionText) && answer != null)
             {
-                fileService.AddQuestionInFile(question, answer);
-                MessageBox.Show("Your question is successfully added");
+                var question = new Question(questionText, answer);
+                fileService.AddQuestionInFile(question);
+                MessageBox.Show("Your questionText is successfully added");
                 LoadQuestions();
                 return;
             }
@@ -51,7 +52,7 @@ namespace Genius_Idiot_WinForms_App
         {
             if (questionsListDataView.SelectedRows.Count == 0)
             {
-                MessageBox.Show("Please select a question to delete!");
+                MessageBox.Show("Please select a questionText to delete!");
                 return;
             }
 

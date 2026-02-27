@@ -59,8 +59,8 @@ namespace Genius_Idiot_WinForms_App
             {
                 string level = LevelCalculator.Calculate(score, countQuestions);
                 MessageBox.Show(level);
-                userResultsStorage.Add(level, score);
-                fileService.SaveResultsInFile(user, userResultsStorage);
+                var userResult = new UserResult(level, score);
+                fileService.AppendResult(userResult);
                 Close();
                 return;
             }

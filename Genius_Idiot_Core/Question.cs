@@ -2,9 +2,12 @@ namespace Genius_Idiot_Core;
 
 public class Question
 {
-    public string Text { get; private set; }
-    public int Answer { get; private set; }
+    public string Text { get; set; }
+    public int Answer { get; set; }
     public int? UserAnswer { get; set; }
+
+    public Question() 
+    { }
 
     public Question(string text, int answer)
     {
