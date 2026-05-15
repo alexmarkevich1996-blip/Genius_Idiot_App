@@ -17,12 +17,11 @@
                           "Тестирование не начнется, покуда вы не введете ключевое слово. ";
         }
 
-        public static bool IsUserReady(string userInput)
+        public static bool IsReadyToStart(string userInput)
         {
-            if (userInput == "ready" && !string.IsNullOrEmpty(userInput))
-            {
+            if (!string.IsNullOrEmpty(userInput) && userInput.ToLower() == "ready")
                 return true;
-            }
+
             return false;
         }
 

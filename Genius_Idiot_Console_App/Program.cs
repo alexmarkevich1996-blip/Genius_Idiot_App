@@ -12,13 +12,12 @@ class Program
 
         do
         {
-            var fileService = new FileService();
-            string userName = SetUserName();
+            IntroductionConsoleView.Run();
+            string userName = AskUserData();
             var user = new User(userName);
-            var questions = new QuestionsStorage(fileService);
-            var userResults = new UserResultsStorage();
-            ShowTestRules();
-            WaitForUserReady();
+            
+
+
             int finalScore = 0;
             TestErudition(questions, user, out finalScore);
 
@@ -62,48 +61,11 @@ class Program
 
             return false;
         }
-        string SetUserName()
-        {
-            while (true)
-            {
-                Console.Write("Пожалуйста, введите ваше имя: ");
-                string userName = Console.ReadLine();
-                if (userName == string.Empty)
-                {
-                    Console.WriteLine("Вы не ввели имя. Просим вас повторить попытку.");
-                }
-                else if (userName.Contains('-'))
-                {
-                    Console.WriteLine($"Недопустимо писать имя со спец символом \"-\"");
-                }
-                else
-                {
-                    Console.WriteLine($"Добро пожаловать, {userName}!");
-                    return userName;
-                }
-            }
-        }
+        
     }
-    public static void ShowTestRules()
-    {
-        Console.WriteLine();
-        Console.WriteLine(TestRules.GetGeneralRules());
-        Console.WriteLine();
-    }
-    public static void WaitForUserReady()
-    {
-        Console.WriteLine(TestRules.GetUserReadyRules());
 
-        while (true)
-        {
-            var userInput = Console.ReadLine().ToLower();
-            
-            if (TestRules.IsUserReady(userInput))
-                break;
+    
 
-            Console.WriteLine(TestRules.GetWrongKeywordMessage());
-        }
-    }
     public static void TestErudition(QuestionsStorage questionsStorage, User user, out int score)
     {
         questionsStorage.Questions = QuestionsStorage.ShuffleQuestions(questionsStorage.Questions);
@@ -113,7 +75,7 @@ class Program
 
         foreach (var question in questionsStorage.Questions)
         {
-            Console.WriteLine($"Вопрос №{currentQuestion}: {question.Text}");
+            Console.WriteLine($"Вопрос №{currentQuestion}: {question.QuestionText}");
             Console.Write("Ваш ответ: ");
 
             GetUserAnswer(question);

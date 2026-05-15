@@ -1,16 +1,19 @@
+using Newtonsoft.Json;
+
 namespace Genius_Idiot_Core;
 
 public class QuestionsStorage
 {
+    private readonly string questionsPath;
     public List<Question> Questions { get; private set; }
-    private FileService fileService { get; set; }
     public int Count { get; private set; }
 
-    public QuestionsStorage(FileService fileService)
+    public QuestionsStorage()
     {
-        this.fileService = fileService;
-        Questions = fileService.GetQuestionsFromFile();
+        questionsPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "questions.txt");
+        Questions = GetQuestions();
         Count = Questions.Count;
+        ShuffleQuestions(Questions);
     }
     public static List<Question> ShuffleQuestions(List<Question> nonShuffledQuestions)
     {
@@ -24,4 +27,34 @@ public class QuestionsStorage
         }
         return questions;
     }
+    public List<Question> GetQuestions()
+    {
+        var hasFileQuestions = FileService.CheckFileContent(questionsPath);
+
+        if (!hasFileQuestions)
+        {
+            var questionsList = new List<Question>()
+            {
+                new Question("Сколько будет два плюс два умноженное на два?", 6),
+                new Question("Бревно нужно распилить на 10 частей, сколько надо сделать распилов?", 9),
+                new Question("На двух руках 10 пальцев. Сколько пальцев на 5 руках?", 25),
+                new Question("Укол делают каждые полчаса, сколько нужно минут для трех уколов?", 60),
+                new Question("Пять свечей горело, две потухли. Сколько свечей осталось?",5)
+            };
+            SaveQuestions(questionsList);
+            return questionsList;
+        }
+        else
+        {
+            var jsonQuestions = FileService.GetDataFromFile(questionsPath);
+            var questions = JsonConvert.DeserializeObject<List<Question>>(jsonQuestions);
+            return questions;
+        }
+    }
+    public void SaveQuestions(List<Question> questions)
+    {
+        var jsonQuestions = JsonConvert.SerializeObject(questions, Formatting.Indented);
+        FileService.SaveDataInFile(questionsPath, jsonQuestions);
+    }
+
 }

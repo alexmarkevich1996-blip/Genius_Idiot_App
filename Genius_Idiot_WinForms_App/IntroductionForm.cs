@@ -28,7 +28,7 @@ namespace Genius_Idiot_WinForms_App
         {
             var userReadinessAnswer = userReadinessTextBox.Text;
 
-            if (TestRules.IsUserReady(userReadinessAnswer))
+            if (TestRules.IsReadyToStart(userReadinessAnswer))
             {
                 Close();
                 return;

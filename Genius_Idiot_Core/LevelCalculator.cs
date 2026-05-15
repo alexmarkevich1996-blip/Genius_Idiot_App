@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Genius_Idiot_Core
 {
-    public class LevelCalculator
+    public static class LevelCalculator
     {
         public static string Calculate(int finalScore, int questionsCount)
         {

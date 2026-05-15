@@ -11,15 +11,4 @@ public class UserResultsStorage
         Results = new List<UserResult>();
     }
 
-    public void Add(string level, int finalScore)
-    {
-        var result = new UserResult(level, finalScore);
-        Results.Add(result);
-    }
-
-    public UserResult GetLastResult()
-    {
-        UserResult lastResult = Results.Last();
-        return lastResult;
-    }
 }

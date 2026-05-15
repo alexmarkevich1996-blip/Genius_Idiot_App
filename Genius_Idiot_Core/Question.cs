@@ -2,22 +2,17 @@ namespace Genius_Idiot_Core;
 
 public class Question
 {
-    public string Text { get; set; }
+    public string QuestionText { get; set; }
     public int Answer { get; set; }
     public int? UserAnswer { get; set; }
 
     public Question() 
     { }
 
-    public Question(string text, int answer)
+    public Question(string questionText, int answer)
     {
-        Text = text;
+        QuestionText = questionText;
         Answer = answer;
         UserAnswer = null;
-    }
-
-    public string Print()
-    {
-        return $"Вопрос: {Text}";
     }
 }
