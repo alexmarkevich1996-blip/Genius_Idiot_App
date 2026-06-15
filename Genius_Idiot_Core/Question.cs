@@ -4,7 +4,6 @@ public class Question
 {
     public string QuestionText { get; set; }
     public int Answer { get; set; }
-    public int? UserAnswer { get; set; }
 
     public Question() 
     { }
@@ -13,6 +12,5 @@ public class Question
     {
         QuestionText = questionText;
         Answer = answer;
-        UserAnswer = null;
     }
 }

@@ -15,11 +15,16 @@ public static class FileService
 
     public static string? GetDataFromFile(string filePath)
     {
-        if (FileService.CheckFileContent(filePath))
-            return null;
-
-        var fileContent = File.ReadAllText(filePath);
-        return fileContent;
+        if (CheckFileContent(filePath))
+        {
+            var fileContent = File.ReadAllText(filePath);
+            return fileContent;
+        }
+        else 
+        {
+            throw new Exception("File is empty");
+        }
+        
     }
 
     public static void SaveDataInFile(string filePath, string jsonData)

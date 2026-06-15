@@ -4,7 +4,6 @@ namespace Genius_Idiot_WinForms_App
 {
     public partial class QuestionsForm : Form
     {
-        private FileService fileService;
         private User user;
         private QuestionsStorage questionsStorage;
         private UserResultsStorage userResultsStorage;
@@ -17,9 +16,8 @@ namespace Genius_Idiot_WinForms_App
         public QuestionsForm()
         {
             InitializeComponent();
-            fileService = new FileService();
             user = new User();
-            questionsStorage = new QuestionsStorage(fileService);
+            questionsStorage = new QuestionsStorage();
             userResultsStorage = new UserResultsStorage();
         }
 
@@ -60,7 +58,7 @@ namespace Genius_Idiot_WinForms_App
                 string level = LevelCalculator.Calculate(score, countQuestions);
                 MessageBox.Show(level);
                 var userResult = new UserResult(level, score);
-                fileService.AppendResult(userResult);
+                userResultsStorage.AppendResult(userResult);
                 Close();
                 return;
             }

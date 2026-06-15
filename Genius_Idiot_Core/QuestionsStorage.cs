@@ -6,14 +6,21 @@ public class QuestionsStorage
 {
     private readonly string questionsPath;
     public List<Question> Questions { get; private set; }
-    public int Count { get; private set; }
+    public int Count 
+    {
+        get => Questions.Count;
+    }
 
     public QuestionsStorage()
     {
-        questionsPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "questions.txt");
+        questionsPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "questions.json");
         Questions = GetQuestions();
-        Count = Questions.Count;
         ShuffleQuestions(Questions);
+    }
+    private void SaveQuestions(List<Question> questions)
+    {
+        var jsonQuestions = JsonConvert.SerializeObject(questions, Formatting.Indented);
+        FileService.SaveDataInFile(questionsPath, jsonQuestions);
     }
     public static List<Question> ShuffleQuestions(List<Question> nonShuffledQuestions)
     {
@@ -51,10 +58,17 @@ public class QuestionsStorage
             return questions;
         }
     }
-    public void SaveQuestions(List<Question> questions)
+    public void AddQuestion(string questionText, int questionAnswer)
     {
-        var jsonQuestions = JsonConvert.SerializeObject(questions, Formatting.Indented);
-        FileService.SaveDataInFile(questionsPath, jsonQuestions);
+        var newQuestion = new Question(questionText, questionAnswer);
+        Questions.Add(newQuestion);
+        SaveQuestions(Questions);
+    }
+   
+    public void DeleteQuestion(int index)
+    {
+        Questions.RemoveAt(index);
+        SaveQuestions(Questions);
     }
 
 }

@@ -13,16 +13,17 @@ namespace Genius_Idiot_WinForms_App
 {
     public partial class ManageQuestionsForm : Form
     {
-        private FileService fileService;
+        private QuestionsStorage QuestionsStorage{ get; set; }
+
         public ManageQuestionsForm()
         {
             InitializeComponent();
-            fileService = new FileService();
+
         }
 
         private void ManageQuestionsForm_Load(object sender, EventArgs e)
         {
-            var questions = fileService.GetQuestionsFromFile();
+            var questions = QuestionsStorage.GetQuestions();
             questionsListDataView.DataSource = questions;
         }
 
@@ -38,8 +39,7 @@ namespace Genius_Idiot_WinForms_App
 
             if (!string.IsNullOrEmpty(questionText) && answer != null)
             {
-                var question = new Question(questionText, answer);
-                fileService.AddQuestionInFile(question);
+                QuestionsStorage.AddQuestion(questionText, answer);
                 MessageBox.Show("Your questionText is successfully added");
                 LoadQuestions();
                 return;
@@ -56,8 +56,8 @@ namespace Genius_Idiot_WinForms_App
                 return;
             }
 
-            var selectedQuestion = questionsListDataView.SelectedRows[0].Index;
-            fileService.RemoveQuestionFromFile(selectedQuestion);
+            var selectedQuestionIndex = questionsListDataView.SelectedRows[0].Index;
+            QuestionsStorage.DeleteQuestion(selectedQuestionIndex);
             MessageBox.Show("Question is successfully deleted!");
             LoadQuestions();
 
@@ -65,7 +65,7 @@ namespace Genius_Idiot_WinForms_App
 
         private void LoadQuestions()
         {
-            var questions = fileService.GetQuestionsFromFile();
+            var questions = QuestionsStorage.GetQuestions();
             questionsListDataView.DataSource = null;
             questionsListDataView.DataSource = questions;
         }
