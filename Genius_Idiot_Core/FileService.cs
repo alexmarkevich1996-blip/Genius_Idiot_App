@@ -22,7 +22,7 @@ public static class FileService
         }
         else 
         {
-            throw new Exception("File is empty");
+            return null;
         }
         
     }

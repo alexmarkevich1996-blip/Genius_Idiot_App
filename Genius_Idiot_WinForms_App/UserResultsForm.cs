@@ -13,15 +13,16 @@ namespace Genius_Idiot_WinForms_App
 {
     public partial class UserResultsForm : Form
     {
-        private UserResultsStorage userStorage { get; set; }
+        private UserResultsStorage userResultsStorage { get; set; }
         public UserResultsForm()
         {
             InitializeComponent();
+            userResultsStorage = new UserResultsStorage();
         }
 
         private void UserResultsForm_Load(object sender, EventArgs e)
         {
-            var userResults = userStorage.GetResults();
+            var userResults = userResultsStorage.Results;
             userResultsDataView.DataSource = userResults;
         }
 

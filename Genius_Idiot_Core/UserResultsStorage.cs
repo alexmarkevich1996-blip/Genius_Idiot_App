@@ -6,11 +6,12 @@ namespace Genius_Idiot_Core;
 public class UserResultsStorage
 {
     private readonly string resultsPath;
-    public List<UserResult> Results { get; set; }
+    public List<UserResult> Results { get; private set; }
 
     public UserResultsStorage()
     {
-        Results = GetResults();
+        resultsPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "results.json");
+        Results = new List<UserResult>();
     }
 
     private void SaveResults(List<UserResult> results)
@@ -28,6 +29,7 @@ public class UserResultsStorage
     public List<UserResult> GetResults()
     {
         var jsonResults = FileService.GetDataFromFile(resultsPath);
+
         var results = JsonConvert.DeserializeObject<List<UserResult>>(jsonResults);
         return results;
     }
