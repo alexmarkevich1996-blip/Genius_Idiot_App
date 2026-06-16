@@ -23,6 +23,7 @@ namespace Genius_Idiot_WinForms_App
 
         private void ManageQuestionsForm_Load(object sender, EventArgs e)
         {
+            QuestionsStorage = new QuestionsStorage();
             var questions = QuestionsStorage.GetQuestions();
             questionsListDataView.DataSource = questions;
         }
