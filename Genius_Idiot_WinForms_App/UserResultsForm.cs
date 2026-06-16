@@ -17,11 +17,11 @@ namespace Genius_Idiot_WinForms_App
         public UserResultsForm()
         {
             InitializeComponent();
-            userResultsStorage = new UserResultsStorage();
         }
 
         private void UserResultsForm_Load(object sender, EventArgs e)
         {
+            userResultsStorage = new UserResultsStorage();
             var userResults = userResultsStorage.Results;
             userResultsDataView.DataSource = userResults;
         }

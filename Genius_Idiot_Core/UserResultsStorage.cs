@@ -12,6 +12,11 @@ public class UserResultsStorage
     {
         resultsPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "results.json");
         Results = new List<UserResult>();
+
+        if (FileService.CheckFileContent(resultsPath))
+        {
+            Results = GetResults();
+        }    
     }
 
     private void SaveResults(List<UserResult> results)
