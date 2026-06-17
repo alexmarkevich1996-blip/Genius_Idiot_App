@@ -6,11 +6,12 @@ namespace Genius_Idiot_Core;
 public class UserResultsStorage
 {
     private readonly string resultsPath;
+    private static IConvert converter = new XMLConverter();
     public List<UserResult> Results { get; private set; }
 
     public UserResultsStorage()
     {
-        resultsPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "results.json");
+        resultsPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "results");
         Results = new List<UserResult>();
 
         if (FileService.CheckFileContent(resultsPath))
@@ -21,7 +22,7 @@ public class UserResultsStorage
 
     private void SaveResults(List<UserResult> results)
     {
-        var jsonResults = JsonConvert.SerializeObject(results, Formatting.Indented);
+        var jsonResults = converter.Serialize(results);
         FileService.SaveDataInFile(resultsPath, jsonResults);
     }
 
@@ -35,7 +36,7 @@ public class UserResultsStorage
     {
         var jsonResults = FileService.GetDataFromFile(resultsPath);
 
-        var results = JsonConvert.DeserializeObject<List<UserResult>>(jsonResults);
+        var results = converter.Deserialize<List<UserResult>>(jsonResults);
         return results;
     }
 

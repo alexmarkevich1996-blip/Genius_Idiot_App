@@ -5,6 +5,7 @@ namespace Genius_Idiot_Core;
 public class QuestionsStorage
 {
     private readonly string questionsPath;
+    private static IConvert converter = new XMLConverter();
     public List<Question> Questions { get; private set; }
     public int Count 
     {
@@ -13,13 +14,13 @@ public class QuestionsStorage
 
     public QuestionsStorage()
     {
-        questionsPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "questions.json");
+        questionsPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "questions");
         Questions = GetQuestions();
         ShuffleQuestions(Questions);
     }
     private void SaveQuestions(List<Question> questions)
     {
-        var jsonQuestions = JsonConvert.SerializeObject(questions, Formatting.Indented);
+        var jsonQuestions = converter.Serialize(questions);
         FileService.SaveDataInFile(questionsPath, jsonQuestions);
     }
     public static List<Question> ShuffleQuestions(List<Question> nonShuffledQuestions)
@@ -54,7 +55,7 @@ public class QuestionsStorage
         else
         {
             var jsonQuestions = FileService.GetDataFromFile(questionsPath);
-            var questions = JsonConvert.DeserializeObject<List<Question>>(jsonQuestions);
+            var questions = converter.Deserialize<List<Question>>(jsonQuestions);
             return questions;
         }
     }
