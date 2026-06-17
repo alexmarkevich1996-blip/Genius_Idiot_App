@@ -42,7 +42,14 @@ namespace Genius_Idiot_WinForms_App
 
         private void NextButton_Click(object sender, EventArgs e)
         {
-            var userAnswer = Convert.ToInt32(userAnswerTextBox.Text);
+            var parsed = InputValidator.TryParseToNumber(userAnswerTextBox.Text, out int number, out string errorMessage);
+            if (!parsed)
+            {
+                MessageBox.Show(errorMessage);
+                return;
+            }
+
+            var userAnswer = number;
             var rightAnswer = currentQuestion.Answer;
 
             if (userAnswer == rightAnswer)
