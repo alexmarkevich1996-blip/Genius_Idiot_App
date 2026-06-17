@@ -36,12 +36,18 @@ namespace Genius_Idiot_WinForms_App
         private void addNewQuestionButton_Click(object sender, EventArgs e)
         {
             var questionText = questionWordingTextBox.Text;
-            var answer = int.Parse(questionAnswerTextBox.Text);
+            var parsed = InputValidator.TryParseToNumber(questionAnswerTextBox.Text, out int number, out string errorMessage);
+            if (!parsed)
+            {
+                MessageBox.Show(errorMessage);
+                return;
+            }
+            var answer = number;
 
-            if (!string.IsNullOrEmpty(questionText) && answer != null)
+            if (!string.IsNullOrEmpty(questionText))
             {
                 QuestionsStorage.AddQuestion(questionText, answer);
-                MessageBox.Show("Your questionText is successfully added");
+                MessageBox.Show("Your question is successfully added");
                 LoadQuestions();
                 return;
             }
